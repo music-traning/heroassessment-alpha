@@ -3,14 +3,14 @@ import { useState } from 'react';
 import { supabase } from '@/utils/supabase';
 import { Card, Title, TextInput, Button } from '@tremor/react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation'; // 💡 useRouterを追加
 
 export default function NormalLogin() {
+  const router = useRouter(); // 💡 ルーターを初期化
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const router = useRouter(); // 💡 画面遷移のための機能
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,7 +27,7 @@ export default function NormalLogin() {
       setError('ログインに失敗しました。メールアドレスとパスワードをご確認ください。');
       setLoading(false);
     } else {
-      // 💡 ログイン成功時、localhost:3000 (ルートURL) へ遷移！
+      // 💡 ログイン成功時、アセスメント画面へ自動遷移させる
       router.push('/');
     }
   };

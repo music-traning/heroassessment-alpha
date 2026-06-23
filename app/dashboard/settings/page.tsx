@@ -25,23 +25,33 @@ function SettingsContent() {
     checkUser();
   }, [router]);
 
-  const handleSave = async (e: React.FormEvent) => {
+ const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setMessage({ text: '', isError: false });
 
     try {
-      // Supabaseの 'companies' テーブルに企業コードを登録（上書き）する
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error("ユーザー情報の取得に失敗しました");
+
+      // 💡 修正1：upsert（上書き許可）を insert（新規のみ）に変更する
       const { error } = await supabase
         .from('companies')
-        .upsert([
+        .insert([
           { 
-            id: companyCode,     // これが「COMP-A」などの企業コードになります
-            name: companyName    // 企業名（任意）
+            id: companyCode,     
+            name: companyName,
+            admin_user_id: user.id
           }
         ]);
 
-      if (error) throw error;
+      // 💡 修正2：すでに使われている場合（一意制約エラー）のメッセージをわかりやすくする
+      if (error) {
+        if (error.code === '23505') { // 23505はデータベースの「重複エラー」のコードです
+          throw new Error("この企業コードは既に他の企業に使用されています。別のコードに変更してください。");
+        }
+        throw error;
+      }
 
       setMessage({ text: '企業コードの登録が完了しました！従業員に共有してください。', isError: false });
     } catch (error: any) {

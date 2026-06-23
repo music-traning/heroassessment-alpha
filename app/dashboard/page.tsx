@@ -4,7 +4,8 @@ import { useState, useEffect, useMemo, Suspense } from 'react';
 import { supabase } from '@/utils/supabase';
 import { 
   Card, Title, Text, Button, Table, TableHead, TableRow, TableHeaderCell, 
-  TableBody, TableCell, Badge, BarChart, DonutChart, Grid 
+  TableBody, TableCell, Badge, BarChart, DonutChart, Grid,
+  Select, SelectItem // 💡 プルダウン用の部品を追加
 } from '@tremor/react';
 import { useRouter } from 'next/navigation';
 
@@ -26,13 +27,15 @@ function DashboardContent() {
   
   // データ保持用のState
   const [currentUserId, setCurrentUserId] = useState('');
-  const [currentCompanyId, setCurrentCompanyId] = useState(''); // 💡 企業コードを保持するState
+  const [currentCompanyId, setCurrentCompanyId] = useState('');
+  const [currentCompanyPlan, setCurrentCompanyPlan] = useState('free');
   const [userEmail, setUserEmail] = useState('');
   const [employees, setEmployees] = useState<EmployeeData[]>([]);
   
   // UI制御用のState
   const [loading, setLoading] = useState(true);
   const [aiReport, setAiReport] = useState<string>('');
+  const [pastReports, setPastReports] = useState<any[]>([]);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [showPaywall, setShowPaywall] = useState(false);
 
@@ -41,41 +44,46 @@ function DashboardContent() {
   // ==========================================
   useEffect(() => {
     const initDashboard = async () => {
-      // ① Supabaseから現在のログインユーザーを取得
       const { data: { user }, error } = await supabase.auth.getUser();
       
       if (error || !user) {
-        router.push('/login');
+        router.push('/admin-login');
         return;
       }
       
       setCurrentUserId(user.id);
       setUserEmail(user.email || '管理者');
 
-      // ② companiesテーブルから、このユーザーが管理する「企業コード」を探す
       const { data: companyData, error: companyError } = await supabase
         .from('companies')
-        .select('id')
+        .select('id, plan')
         .eq('admin_user_id', user.id)
-        .maybeSingle(); // エラーを出さずに0件か1件を取得
+        .maybeSingle();
 
       if (companyError || !companyData) {
         console.warn('このアカウントに紐づく企業コードが見つかりません。');
         setLoading(false);
-        return; // 企業が見つからない場合はここでストップ
+        return;
       }
 
       const companyId = companyData.id;
       setCurrentCompanyId(companyId);
+      setCurrentCompanyPlan(companyData.plan || 'free');
+
+      const { data: reportsData } = await supabase
+        .from('ai_reports')
+        .select('*')
+        .eq('company_id', companyId)
+        .order('created_at', { ascending: false });
       
-      // ③ 見つけた「企業コード」を使って社員データを取得
+      if (reportsData) setPastReports(reportsData);
+      
       await fetchEmployeesData(companyId);
     };
     
     initDashboard();
   }, [router]);
 
-  // 引数として受け取った企業コード(cid)で社員を検索
   const fetchEmployeesData = async (cid: string) => {
     setLoading(true);
     try {
@@ -85,7 +93,7 @@ function DashboardContent() {
           id, employee_id_or_name, department, role,
           assessment_results ( type_str, tier, percentages, created_at )
         `)
-        .eq('company_id', cid); // 💡 UUIDではなく、見つけた企業コードで検索！
+        .eq('company_id', cid);
 
       if (empError) throw empError;
       setEmployees((empData as EmployeeData[]) || []);
@@ -110,7 +118,6 @@ function DashboardContent() {
       const { data: emps, error: empError } = await supabase
         .from('employees')
         .insert([
-          // 💡 企業コード(currentCompanyId)を使って社員を登録
           { company_id: currentCompanyId, employee_id_or_name: 'デモ社員A', department: '営業部', role: 'リーダー' },
           { company_id: currentCompanyId, employee_id_or_name: 'デモ社員B', department: '開発部', role: 'メンバー' }
         ])
@@ -125,7 +132,6 @@ function DashboardContent() {
         ]);
       }
       
-      // 生成後、再度データを取得して画面を更新
       await fetchEmployeesData(currentCompanyId);
     } catch (error: any) {
       console.error(error);
@@ -136,13 +142,11 @@ function DashboardContent() {
   };
 
   // ==========================================
-  // 3. AI分析処理（プラン判定）
+  // 3. AI分析処理
   // ==========================================
   const generateAiReport = async () => {
-    // 💡 プレミアム権限のチェック
-    const premiumEmails = ['admin@example.com']; 
 
-    if (!premiumEmails.includes(userEmail)) {
+    if (currentCompanyPlan !== 'premium') {
       setShowPaywall(true);
       return;
     }
@@ -173,6 +177,26 @@ function DashboardContent() {
       }
       
       setAiReport(data.report);
+
+      // 💡 ここから追加：生成されたレポートをデータベースに自動保存する
+      const { data: newReport, error: saveError } = await supabase
+        .from('ai_reports')
+        .insert({
+          company_id: currentCompanyId,
+          report_content: data.report
+        })
+        .select()
+        .single();
+        
+      if (saveError) {
+        // 🚨 万が一Supabaseの防壁（RLS）に弾かれたらアラートを出す
+        console.error('保存エラー:', saveError);
+        alert('レポートの表示には成功しましたが、履歴への保存に失敗しました。Supabaseのai_reportsテーブルのアクセス権限（RLS）を確認してください。');
+      } else if (newReport) {
+        // 保存に成功したら、履歴リストの先頭に追加する
+        setPastReports(prev => [newReport, ...prev]);
+      }
+
     } catch (error: any) {
       console.error(error);
       alert(error.message);
@@ -183,7 +207,7 @@ function DashboardContent() {
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
-    router.push('/login'); 
+    router.push('/signup'); 
   };
 
   // ==========================================
@@ -236,8 +260,13 @@ function DashboardContent() {
             </Text>
           </div>
           <div className="flex gap-4 items-center">
-            <Button variant="light" onClick={() => router.back()}>
-              ← 前に戻る
+            
+            <Button variant="light" onClick={() => router.push('/admin-login')}>
+              ← ログイン画面に戻る
+            </Button>
+
+            <Button variant="secondary" onClick={() => window.open('/', '_blank')}>
+              📝 アセスメント受診画面を開く
             </Button>
 
             <Button variant="secondary" onClick={() => router.push('/dashboard/settings')}>
@@ -272,10 +301,31 @@ function DashboardContent() {
                 <DonutChart className="h-60 mt-4" data={typeDistribution} category="社員数" index="name" colors={["indigo", "violet", "fuchsia", "pink", "cyan", "teal", "emerald", "lime", "amber", "orange", "red", "rose"]} valueFormatter={(number) => `${number} 名`} />
               </Card>
 
-              {aiReport ? (
-                <Card className="bg-fuchsia-50 border-fuchsia-200 overflow-y-auto max-h-[340px]">
-                  <Title className="text-fuchsia-800 mb-2 flex items-center gap-2">✨ AI組織開発レポート</Title>
-                  <div className="prose max-w-none text-slate-700 whitespace-pre-wrap text-sm leading-relaxed">{aiReport}</div>
+             {aiReport || pastReports.length > 0 ? (
+                <Card className="bg-fuchsia-50 border-fuchsia-200 flex flex-col h-[340px]">
+                  <div className="flex justify-between items-center mb-4">
+                    <Title className="text-fuchsia-800 flex items-center gap-2">✨ AI組織開発レポート</Title>
+                    {/* 💡 過去の履歴を切り替えるプルダウン */}
+                    {pastReports.length > 0 && (
+                      <div className="w-48">
+                        <Select 
+                          value={aiReport || pastReports[0]?.report_content} // 💡 確実に選択状態が反映されるように調整
+                          placeholder="履歴から選択" 
+                          onValueChange={(val) => setAiReport(val)}
+                        >
+                          {pastReports.map((report, idx) => (
+                            <SelectItem key={report.id} value={report.report_content}>
+                              {new Date(report.created_at).toLocaleDateString('ja-JP')} の分析
+                              {idx === 0 && ' (最新)'}
+                            </SelectItem>
+                          ))}
+                        </Select>
+                      </div>
+                    )}
+                  </div>
+                  <div className="prose max-w-none text-slate-700 whitespace-pre-wrap text-sm leading-relaxed overflow-y-auto flex-1">
+                    {aiReport || (pastReports[0]?.report_content)}
+                  </div>
                 </Card>
               ) : (
                 <Card className="flex flex-col items-center justify-center text-slate-400 border-dashed bg-slate-100 h-60 mt-0">
@@ -334,7 +384,7 @@ function DashboardContent() {
               </p>
               <div className="flex gap-4 justify-end mt-8">
                 <Button variant="secondary" onClick={() => setShowPaywall(false)}>閉じる</Button>
-                <Button color="blue" onClick={() => alert('※ここから問い合わせページに遷移します')}>料金プランを問い合わせる</Button>
+                <Button color="blue" onClick={() => router.push('/pricing')}>料金プランを見る</Button>
               </div>
             </Card>
           </div>
