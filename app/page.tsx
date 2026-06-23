@@ -2,13 +2,16 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+// 💡 修正1: 'react' から Suspense を追加で読み込む
+import { useState, Suspense } from 'react'; 
 import { Card, Title, Button, TextInput } from '@tremor/react';
 import { heroData, calculateScore } from '@/utils/heroData';
 import { useSearchParams } from 'next/navigation';
+
 type ScreenState = 'home' | 'entry' | 'quiz' | 'result';
 
-export default function AssessmentPage() {
+// 💡 修正2: 「AssessmentPage」という名前を「AssessmentContent」に変更する（export default は外す）
+function AssessmentContent() {
   const searchParams = useSearchParams();
   const cid = searchParams.get('cid');
   const router = useRouter();
@@ -31,7 +34,6 @@ export default function AssessmentPage() {
     setEntryError(''); 
   };
 
-  // 企業が存在するかAPIでチェックしてからクイズに進む（通常ルート）
   const startQuiz = async () => {
     setEntryError('');
 
@@ -67,9 +69,7 @@ export default function AssessmentPage() {
     }
   };
 
-  // 💡 追加: 企業チェックAPIをスキップする「ゲスト専用ルート」
   const startGuestQuiz = () => {
-    // ゲスト用のダミー情報をセット
     setEmpInfo({
       companyId: 'GUEST_TRIAL',
       employeeId: 'お試しゲスト_' + Math.floor(Math.random() * 1000),
@@ -77,7 +77,6 @@ export default function AssessmentPage() {
       role: 'ゲスト'
     });
     
-    // API通信をせずに、直接クイズ画面へ進む
     const targetQuestions = heroData.questions.filter((q: any) => q.tier <= tier);
     setQuestions(targetQuestions);
     setCurrentIdx(0);
@@ -182,7 +181,6 @@ export default function AssessmentPage() {
         </Button>
       </div>
 
-      {/* 💡 追加：個人お試し用ルート */}
       <div className="relative my-8">
         <div className="absolute inset-0 flex items-center">
           <div className="w-full border-t border-slate-200" />
@@ -278,5 +276,14 @@ export default function AssessmentPage() {
       {currentScreen === 'quiz' && renderQuiz()}
       {currentScreen === 'result' && renderResult()}
     </div>
+  );
+}
+
+// 💡 修正3: ファイルの一番最後に、Suspenseで包んだ「本来のAssessmentPage」を新しく作る
+export default function AssessmentPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">画面を準備中...</div>}>
+      <AssessmentContent />
+    </Suspense>
   );
 }
