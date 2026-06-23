@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>心理的資本アセスメントシステム | HERO Assessment</title>
+
+    <script defer src="/_vercel/insights/script.js"></script>
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes"> 
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <meta name="theme-color" content="#ffffff">
+
+    <meta property="og:title" content="心理的資本アセスメント | HERO Assessment">
+    <meta property="og:description" content="組織のレジリエンスとコンピテンシーを可視化する、HERO理論に基づく全16クラスのステータス診断システム。">
+    <meta property="og:url" content="https://heroassessmentonline.vercel.app/">
+    <meta property="og:image" content="https://heroassessmentonline.vercel.app/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="HERO Assessment">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="心理的資本アセスメント | HERO Assessment">
+    <meta name="twitter:description" content="組織のレジリエンスとコンピテンシーを可視化する診断システム。">
+    <meta name="twitter:image" content="https://heroassessmentonline.vercel.app/og-image.png">
+
+<style>
+        :root {
+            --bg-color: #f4f6f9;
+            --text-color: #333333;
+            --text-muted: #666666;
+            --border-color: #dcdfe6;
+            --accent-color: #0056b3; 
+            --accent-hover: #004085;
+            --danger-color: #dc3545;
+            --card-bg: #ffffff;
+            --success-color: #28a745;
+        }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+            margin: 0;
+            padding: 20px 10px;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        #app-container {
+            max-width: 640px;
+            margin: 0 auto;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 30px 24px;
+            background-color: var(--card-bg);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+        }
+        
+        h1, h2, h3 { 
+            text-align: center; 
+            margin-top: 0; 
+            color: #111111;
+            font-weight: 600;
+        }
+        
+        h1 { font-size: 24px; margin-bottom: 8px; }
+        h2 { font-size: 20px; margin-bottom: 16px; }
+        h3 { font-size: 16px; margin-bottom: 12px; }
+        
+        .btn {
+            background-color: #ffffff;
+            color: var(--accent-color);
+            border: 1px solid var(--accent-color);
+            border-radius: 4px;
+            padding: 12px 16px;
+            font-family: inherit;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 12px;
+            box-sizing: border-box;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+        
+        .btn:hover {
+            background-color: var(--accent-color);
+            color: #ffffff;
+        }
+        
+        .btn:active {
+            transform: translateY(1px);
+        }
+        
+        .btn-danger { 
+            border-color: var(--danger-color); 
+            color: var(--danger-color); 
+        }
+        .btn-danger:hover {
+            background-color: var(--danger-color);
+            color: #ffffff;
+        }
+        
+        select.btn {
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%230056b3%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8s-1.9-9.3-5.5-12.8z%22/%3E%3C/svg%3E');
+            background-repeat: no-repeat;
+            background-position: right 16px top 50%;
+            background-size: 12px auto;
+            padding-right: 40px;
+            text-align: left;
+        }
+        select.btn:hover {
+            background-color: #f8f9fa;
+            color: var(--accent-color);
+        }
+
+        .question-card { 
+            border: 1px solid var(--border-color); 
+            border-radius: 6px;
+            padding: 20px; 
+            margin-bottom: 24px; 
+            background-color: #fafafa;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        
+        .options { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 10px; 
+            margin-top: 20px; 
+        }
+        
+        .option-btn { 
+            background: #ffffff; 
+            color: var(--text-color); 
+            border: 1px solid var(--border-color); 
+            border-radius: 4px;
+            padding: 14px 16px; 
+            text-align: left; 
+            font-family: inherit; 
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .option-btn:hover {
+            background-color: #f5f7fa;
+            border-color: #c0c4cc;
+        }
+        .option-btn.selected { 
+            background: #e8f0fe; 
+            border-color: var(--accent-color); 
+            color: var(--accent-color);
+            font-weight: 600;
+        }
+
+        .stat-row { 
+            display: flex; 
+            align-items: center; 
+            margin-bottom: 12px; 
+        }
+        .stat-label { 
+            width: 90px; 
+            font-weight: 600; 
+            font-size: 14px;
+        }
+        .stat-bar-container { 
+            flex-grow: 1; 
+            border: 1px solid var(--border-color); 
+            border-radius: 10px;
+            height: 16px; 
+            background: #f0f2f5; 
+            padding: 2px;
+            overflow: hidden;
+        }
+        .stat-bar { 
+            height: 100%; 
+            background: var(--accent-color); 
+            border-radius: 8px;
+            transition: width 0.4s ease; 
+        }
+
+        .history-item { 
+            border-bottom: 1px solid var(--border-color); 
+            padding: 12px 0; 
+            font-size: 14px; 
+        }
+        
+        .affinity-item { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            border-bottom: 1px dashed var(--border-color); 
+            padding: 10px 0; 
+        }
+        .affinity-item:last-child { border-bottom: none; }
+        .affinity-type { font-weight: 600; width: 60px; color: #444; }
+        .affinity-title { flex-grow: 1; padding-left: 10px; color: #333; }
+        .affinity-score-box { text-align: right; }
+        .affinity-relation { font-size: 11px; color: var(--success-color); display: block; font-weight: 500; }
+        
+        .hidden { display: none !important; }
+        
+        .header-controls { 
+            display: flex; 
+            justify-content: space-between; 
+            margin-bottom: 24px; 
+            gap: 10px; 
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border-color);
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        details summary::marker {
+            color: var(--accent-color);
+        }
+    </style>
+</head>
+<body>
+
+<div id="app-container">
+    <div class="header-controls">
+        <button id="lang-toggle" style="background:#ffffff; color:var(--text-muted); border:1px solid var(--border-color); border-radius:4px; padding:6px 12px; font-family: inherit; cursor:pointer; font-size:12px;">JA / EN</button>
+        <button id="btn-help" onclick="showHelp()" style="background:#ffffff; color:var(--text-muted); border:1px solid var(--border-color); border-radius:4px; padding:6px 12px; font-family: inherit; cursor:pointer; font-size:12px;">クラス一覧</button>
+    </div>
+
+    <div id="screen-home">
+        <h1 id="ui-title">心理的資本アセスメント</h1>
+        <p id="ui-desc" style="text-align:center; font-size:14px; margin-bottom:20px; color: var(--text-muted);">HEROに基づく組織レジリエンス及びコンピテンシー診断</p>
+
+        <details style="margin-bottom: 12px; background: #ffffff; border: 1px solid var(--border-color); border-radius: 6px; padding: 12px;">
+            <summary id="ui-about-summary" style="font-size: 14px; font-weight: bold; cursor: pointer; color: var(--accent-color); outline: none;">このアプリについて・使い方</summary>
+            <div id="ui-about-content" style="font-size: 13px; line-height: 1.6; color: #444; margin-top: 12px; padding-top: 12px; border-top: 1px dashed var(--border-color);"></div>
+        </details>
+
+        <details style="margin-bottom: 24px; background: #f8fbff; border: 1px solid #b3d7ff; border-radius: 6px; padding: 12px;">
+            <summary id="ui-b2b-summary" style="font-size: 14px; font-weight: bold; cursor: pointer; color: var(--accent-color); outline: none;">法人・組織でのご利用について（管理者様へ）</summary>
+            <div id="ui-b2b-content" style="font-size: 13px; line-height: 1.6; color: #444; margin-top: 12px; padding-top: 12px; border-top: 1px dashed #b3d7ff;"></div>
+        </details>
+
+        <button class="btn" onclick="startQuiz(1)" id="btn-tier1">簡易診断 (12問)</button>
+        <button class="btn" onclick="startQuiz(2)" id="btn-tier2">標準診断 (28問)</button>
+        <button class="btn" onclick="startQuiz(3)" id="btn-tier3">精密診断 (48問)</button>
+        
+        <div style="margin-top: 40px; border-top: 1px solid var(--border-color); padding-top: 24px;">
+            <h3 id="ui-quick-affinity-title">人材シナジー・シミュレーター</h3>
+            <p id="ui-quick-affinity-desc" style="font-size: 13px; text-align: center; color: var(--text-muted); margin-bottom: 16px;">2つのタイプを選択し、組織マネジメントにおける相互作用を確認します</p>
+            <div style="display: flex; gap: 12px; align-items: center; margin-bottom: 12px;">
+                <select id="affinity-type-a" class="btn" style="width: 47%; margin-bottom: 0; font-size: 13px;"></select>
+                <span style="font-weight: bold; color: #999;">×</span>
+                <select id="affinity-type-b" class="btn" style="width: 47%; margin-bottom: 0; font-size: 13px;"></select>
+            </div>
+            <button class="btn" onclick="checkQuickAffinity()" id="btn-check-affinity">シナジーを算出</button>
+            <div id="quick-affinity-result" style="margin-top: 12px; border: 1px solid #b3d7ff; border-radius: 6px; padding: 16px; background: #f8f9fa;" class="hidden">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <strong id="quick-result-relation" style="color: var(--accent-color); font-size: 16px;"></strong>
+                    <span id="quick-result-score" style="font-size: 20px; font-weight: bold; color: #222;"></span>
+                </div>
+                <p id="quick-result-desc" style="font-size: 13px; line-height: 1.6; color: #555; margin-top: 12px; padding-top: 12px; border-top: 1px dashed var(--border-color);"></p>
+            </div>
+        </div>
+
+        <div style="margin-top: 35px;">
+            <h3 id="ui-history-title">受診履歴</h3>
+            <div id="history-list"></div>
+            <button class="btn btn-danger hidden" id="btn-clear-history" onclick="clearHistory()" style="margin-top:12px;">履歴を消去</button>
+        </div>
+    </div>
+
+    <div id="screen-entry" class="hidden">
+        <h2 id="ui-entry-title" style="font-size: 20px;">受診者情報の入力</h2>
+        <p id="ui-entry-desc" style="font-size:13px; color:var(--text-muted); margin-bottom:20px; line-height:1.5;"></p>
+
+        <div style="margin-bottom:16px;">
+            <label id="ui-label-comp" style="font-size:14px; font-weight:bold; display:block; margin-bottom:8px;">企業コード <span style="color:var(--danger-color);">*</span></label>
+            <input type="text" id="input-company-id" style="width:100%; padding:12px; border:1px solid var(--border-color); border-radius:4px; box-sizing:border-box; font-size:14px; font-weight:bold; color:var(--accent-color);">
+            <p id="ui-note-comp" style="font-size:12px; color:var(--text-muted); margin-top:4px; margin-bottom:0;"></p>
+        </div>
+
+        <div style="margin-bottom:16px;">
+            <label id="ui-label-emp" style="font-size:14px; font-weight:bold; display:block; margin-bottom:8px;">社員番号 または 氏名 <span style="color:var(--danger-color);">*</span></label>
+            <input type="text" id="input-emp-id" style="width:100%; padding:12px; border:1px solid var(--border-color); border-radius:4px; box-sizing:border-box; font-size:14px;">
+        </div>
+
+        <div style="margin-bottom:16px;">
+            <label id="ui-label-dept" style="font-size:14px; font-weight:bold; display:block; margin-bottom:8px;">所属部署 <span style="color:var(--danger-color);">*</span></label>
+            <select id="select-dept" class="btn" style="margin-bottom:0; font-size:14px;">
+                <option value=""></option>
+            </select>
+        </div>
+
+        <div style="margin-bottom:24px;">
+            <label id="ui-label-role" style="font-size:14px; font-weight:bold; display:block; margin-bottom:8px;">役職 <span style="color:var(--danger-color);">*</span></label>
+            <select id="select-role" class="btn" style="margin-bottom:0; font-size:14px;">
+                <option value=""></option>
+            </select>
+        </div>
+
+        <div style="margin-bottom:24px; background:#fafafa; padding:12px; border:1px solid var(--border-color); border-radius:4px;">
+            <label style="display:flex; align-items:flex-start; gap:8px; font-size:13px; cursor:pointer;">
+                <input type="checkbox" id="check-consent" style="margin-top:2px;">
+                <span id="ui-text-consent" style="line-height:1.4; color:#333;"></span>
+            </label>
+        </div>
+
+        <button id="btn-entry-start" class="btn" onclick="beginAssessment()" style="background-color: var(--accent-color); color: white;"></button>
+        <button id="btn-entry-cancel" class="btn" onclick="goHome()" style="background: none; border:none; color: var(--text-muted); margin-bottom:0;"></button>
+    </div>
+
+    <div id="screen-quiz" class="hidden">
+        <div style="margin-bottom: 20px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <h3 id="quiz-progress" style="margin: 0; color: var(--text-muted); font-size: 14px; font-weight:bold;"></h3>
+                <button id="btn-quiz-abort" onclick="abortQuiz()" style="background: none; border: 1px solid var(--border-color); border-radius:4px; color: var(--text-muted); padding: 4px 10px; cursor: pointer; font-family: inherit; font-size: 12px;">中断</button>
+            </div>
+            <div style="width: 100%; height: 6px; background: #e9ecef; border-radius: 3px; overflow: hidden;">
+                <div id="progress-bar" style="height: 100%; background: var(--accent-color); width: 0%; transition: width 0.4s ease-out;"></div>
+            </div>
+        </div>
+        <div class="question-card" id="question-text"></div>
+        <div class="options" id="quiz-options"></div>
+        <div style="display:flex; gap:12px; margin-top:24px;">
+            <button class="btn" onclick="prevQuestion()" id="btn-prev" style="width:30%;">戻る</button>
+            <button class="btn" onclick="nextQuestion()" id="btn-next" style="width:70%; background-color: var(--accent-color); color: white;">次へ</button>
+        </div>
+    </div>
+
+    <div id="screen-result" class="hidden">
+        <div style="text-align: center; margin-bottom: 8px; font-size: 14px; font-weight: 600; color: var(--accent-color);" id="result-type"></div>
+        <h2 id="result-title" style="margin-bottom: 24px;"></h2>
+        <div style="text-align: center; margin: 0 0 24px 0;">
+            <div style="width: 80px; height: 80px; border: 1px solid var(--border-color); border-radius: 50%; display: inline-block; overflow: hidden; background: #f8f9fa;"></div>
+        </div>
+        
+        <div style="margin-bottom: 24px; border: 1px solid var(--border-color); border-radius: 6px; padding: 20px 16px; background-color: #fafafa;">
+            <div class="stat-row"><div class="stat-label">Hope</div><div class="stat-bar-container"><div id="bar-h" class="stat-bar"></div></div></div>
+            <div class="stat-row"><div class="stat-label">Efficacy</div><div class="stat-bar-container"><div id="bar-e" class="stat-bar"></div></div></div>
+            <div class="stat-row"><div class="stat-label">Resilience</div><div class="stat-bar-container"><div id="bar-r" class="stat-bar"></div></div></div>
+            <div class="stat-row"><div class="stat-label">Optimism</div><div class="stat-bar-container"><div id="bar-o" class="stat-bar"></div></div></div>
+        </div>
+        
+        <p id="result-profile" style="font-size: 15px; line-height: 1.7; color: #444; margin-bottom: 24px; text-align: justify;"></p>
+        
+        <div style="border:1px solid #b3d7ff; border-radius: 6px; padding: 16px; margin-top: 20px; background-color: #fdfdfd;">
+            <strong id="ui-action-plan" style="color: var(--accent-color); font-size: 14px; display: block; margin-bottom: 8px;"></strong>
+            <span id="result-action" style="font-size: 14px; line-height: 1.6; color: #444;"></span>
+        </div>
+        
+        <div style="border:1px solid var(--border-color); border-radius: 6px; padding: 16px; margin-top: 20px; background-color: #ffffff;">
+            <strong id="ui-affinity" style="font-size: 14px; display: block; margin-bottom: 12px; color: #333;"></strong>
+            <div id="affinity-list" style="margin-top: 10px; font-size: 13px;"></div>
+        </div>
+        <button class="btn" onclick="shareOnX()" style="margin-top: 24px; background-color: #222222; color: #ffffff; border: none;" id="btn-share-x"></button>
+        <button class="btn" onclick="goHome()" style="margin-top: 10px;" id="btn-home"></button>
+    </div>
+
+    <div id="screen-help" class="hidden">
+        <h2 id="ui-help-title"></h2>
+        <p id="ui-help-desc" style="font-size: 13px; text-align: center; color: var(--text-muted); margin-bottom: 20px;"></p>
+        <div id="help-list" style="max-height: 420px; overflow-y: auto; border: 1px solid var(--border-color); border-radius: 6px; padding: 16px; background: #ffffff;"></div>
+        <button class="btn" onclick="closeHelp()" style="margin-top: 24px;" id="btn-close-help"></button>
+    </div>
+
+    <footer>
+        <div style="margin-bottom: 20px;">
+            <p id="ui-contact-title" style="font-size: 13px; font-weight: bold; color: var(--text-color); margin-bottom: 8px;"></p>
+            <a href="mailto:deskel358@gmail.com" id="ui-contact-email" style="font-size: 13px; color: var(--accent-color); text-decoration: none;">
+        </div>
+        <p style="margin: 0; font-size: 12px;">© 2026 United Make Associates</p>
+    </footer>
+
+</div>
+
+<script src="./data.js"></script>
+<script src="./logic.js"></script>
+<script src="./main.js"></script>
+
+</body>
+</html>

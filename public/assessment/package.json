@@ -1,0 +1,7 @@
+{
+  "name": "hero-assessment",
+  "version": "1.0.0",
+  "dependencies": {
+    "@vercel/edge-config": "^1.1.1"
+  }
+}

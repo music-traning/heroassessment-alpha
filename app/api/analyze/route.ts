@@ -1,0 +1,59 @@
+import { NextResponse } from 'next/server';
+
+export async function POST(req: Request) {
+  try {
+    const body = await req.json();
+    const { chartData } = body;
+
+    const prompt = `あなたはプロの組織開発コンサルタントです。
+以下の「HERO（心理的資本）」のアセスメント結果データを分析し、経営陣に向けて「組織の現状の強み・弱み」と「具体的な改善アクション」を提示してください。
+回答は読みやすいMarkdown形式（見出しや箇条書きを使用）で出力してください。
+
+【社員のアセスメントデータ】
+${JSON.stringify(chartData, null, 2)}`;
+
+    const apiKey = process.env.GEMINI_API_KEY;
+    
+    if (!apiKey) {
+      throw new Error("APIキーが設定されていません。");
+    }
+
+    // 💡 モデル名を高速・低コストな「gemini-2.0-flash-lite」に変更しました
+    // 💡 修正：世界で一番安定しているエンタープライズ向けモデル「gemini-1.5-flash」を指定
+    // 💡 修正：あなたが最初に書いていた大正解の「gemini-2.5-flash」に戻します！
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }]
+        })
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      console.error("Google API Error:", data);
+      
+      // 💡 429エラー（利用制限・残高不足）の場合
+      if (response.status === 429 || (data.error && data.error.code === 429)) {
+         throw new Error("現在AIのアクセス制限に達しています。残高を確認するか、しばらく待ってから再度お試しください。");
+      }
+      // 💡 503エラー（Google側のサーバー大混雑）の場合
+      if (response.status === 503 || (data.error && data.error.code === 503)) {
+         throw new Error("現在、GoogleのAIサーバーが混み合っています。数分待ってから再度「分析する」ボタンを押してください。");
+      }
+      
+      throw new Error("AI分析中にエラーが発生しました。");
+    }
+
+    const text = data.candidates[0].content.parts[0].text;
+    return NextResponse.json({ report: text });
+
+  } catch (error: any) {
+    console.error("Fetch API Error:", error.message || error);
+    return NextResponse.json({ error: "分析中にエラーが発生しました" }, { status: 500 });
+  }
+}
