@@ -25,41 +25,36 @@ function SettingsContent() {
     checkUser();
   }, [router]);
 
- const handleSave = async (e: React.FormEvent) => {
+const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setMessage({ text: '', isError: false });
 
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error("ユーザー情報の取得に失敗しました");
+      // 💡 修正: 直接Supabaseを叩くのではなく、自分たちで作った安全なAPIにデータを送信する
+      const response = await fetch('/api/companies', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          companyCode: companyCode, 
+          companyName: companyName 
+        }),
+      });
 
-      // 新規企業コードと自分（管理者）の紐付け
-      const { error } = await supabase
-        .from('companies')
-        .insert([
-          { 
-            id: companyCode,     
-            name: companyName,
-            admin_user_id: user.id
-          }
-        ]);
+      const data = await response.json();
 
-      if (error) {
-        if (error.code === '23505') { 
-          throw new Error("この企業コードは既に他の企業に使用されています。別のコードに変更してください。");
-        }
-        throw error;
+      // APIからエラーが返ってきた場合の処理
+      if (!response.ok) {
+        throw new Error(data.error || "登録に失敗しました");
       }
 
-      setMessage({ text: '企業コードの登録が完了しました！ダッシュボードへ移動します...', isError: false });
+      // 成功時の処理
+      setMessage({ text: '企業コードの登録が完了しました！従業員に共有してください。', isError: false });
       
-      setTimeout(() => {
-        router.push('/dashboard');
-      }, 1500);
-
     } catch (error: any) {
-      setMessage({ text: `登録に失敗しました: ${error.message}`, isError: true });
+      setMessage({ text: error.message, isError: true });
     } finally {
       setLoading(false);
     }

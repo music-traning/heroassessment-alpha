@@ -32,6 +32,9 @@ function DashboardContent() {
   const [userEmail, setUserEmail] = useState('');
   const [employees, setEmployees] = useState<EmployeeData[]>([]);
   
+  // 💡 複数企業を保持するための新しいStateを追加
+  const [adminCompanies, setAdminCompanies] = useState<any[]>([]);
+  
   // UI制御用のState
   const [loading, setLoading] = useState(true);
   const [aiReport, setAiReport] = useState<string>('');
@@ -57,37 +60,45 @@ function DashboardContent() {
       setCurrentUserId(user.id);
       setUserEmail(user.email || '管理者');
 
-      const { data: companyData } = await supabase
+      // 💡 変更: maybeSingle()をやめ、管理している「すべての企業」を取得する
+      const { data: companiesData } = await supabase
         .from('companies')
-        .select('id, plan')
-        .eq('admin_user_id', user.id)
-        .maybeSingle();
+        .select('id, name, plan')
+        .eq('admin_user_id', user.id);
 
-      if (!companyData) {
+      if (!companiesData || companiesData.length === 0) {
         setLoading(false);
         return;
       }
 
-      const companyId = companyData.id;
-      setCurrentCompanyId(companyId);
-      setCurrentCompanyPlan(companyData.plan || 'free');
+      setAdminCompanies(companiesData);
 
-      const { data: reportsData } = await supabase
-        .from('ai_reports')
-        .select('*')
-        .eq('company_id', companyId)
-        .order('created_at', { ascending: false });
-      
-      if (reportsData) setPastReports(reportsData);
-      
-      await fetchEmployeesData(companyId);
+      // 最初に見つかった企業をデフォルトとしてセット
+      const initialCompany = companiesData[0];
+      setCurrentCompanyId(initialCompany.id);
+      setCurrentCompanyPlan(initialCompany.plan || 'free');
+
+      // 💡 該当企業のレポートと従業員データをロード
+      await loadCompanySpecificData(initialCompany.id);
     };
     initDashboard();
   }, [router]);
 
-  const fetchEmployeesData = async (cid: string) => {
+  // 💡 企業ごとのデータをまとめてロードする関数
+  const loadCompanySpecificData = async (cid: string) => {
     setLoading(true);
     try {
+      // レポート履歴の取得
+      const { data: reportsData } = await supabase
+        .from('ai_reports')
+        .select('*')
+        .eq('company_id', cid)
+        .order('created_at', { ascending: false });
+      
+      setPastReports(reportsData || []);
+      setAiReport(''); // 企業を切り替えたら表示中のAIレポートをリセットする
+
+      // 従業員データの取得
       const { data: empData, error: empError } = await supabase
         .from('employees')
         .select(`
@@ -105,6 +116,16 @@ function DashboardContent() {
     }
   };
 
+  // 💡 プルダウンで企業を切り替えた時のハンドラー
+  const handleCompanyChange = (newCid: string) => {
+    setCurrentCompanyId(newCid);
+    const targetCompany = adminCompanies.find(c => c.id === newCid);
+    if (targetCompany) setCurrentCompanyPlan(targetCompany.plan || 'free');
+    
+    // 選ばれた企業のデータに切り替える
+    loadCompanySpecificData(newCid);
+  };
+
   // ==========================================
   // CSVダウンロード処理
   // ==========================================
@@ -117,7 +138,6 @@ function DashboardContent() {
       const latest = sorted[0];
       const p = latest?.percentages;
       
-      // CSV用のリスク判定
       let riskStr = '安定';
       if (latest) {
         const latestAvg = (p.H + p.E + p.R + p.O) / 4;
@@ -144,14 +164,10 @@ function DashboardContent() {
     document.body.removeChild(link);
   };
 
-  // ==========================================
-  // 💡 第3段で追加：PDF印刷・レポート出力処理
-  // ==========================================
   const handlePrintPDF = () => {
-    window.print(); // 印刷プロンプトを呼び出す（CSSで印刷用に最適化されます）
+    window.print(); 
   };
 
-  // 従業員データの削除処理
   const executeDelete = async () => {
     if (!deleteTargetId) return;
     setIsDeleting(true);
@@ -167,36 +183,44 @@ function DashboardContent() {
     }
   };
 
-  // テストデータ生成（離職リスクシミュレーション対応版）
-  const generateTestData = async () => {
+ const generateTestData = async () => {
     if (!currentCompanyId) return alert("企業コードがありません。");
     setLoading(true);
     try {
+      // 1. 社員データの生成
       const { data: emps, error: empError } = await supabase.from('employees').insert([
         { company_id: currentCompanyId, employee_id_or_name: 'デモ社員A', department: '営業部', role: 'リーダー' },
         { company_id: currentCompanyId, employee_id_or_name: 'デモ社員B', department: '開発部', role: 'メンバー' },
         { company_id: currentCompanyId, employee_id_or_name: 'デモ社員C（リスク検知用）', department: '営業部', role: 'メンバー' }
       ]).select();
+      
       if (empError) throw empError;
 
-      if (emps && emps.length === 3) {
-        const pastDate = new Date();
-        pastDate.setMonth(pastDate.getMonth() - 3);
+      // 2. アセスメント結果の生成
+        if (emps && emps.length === 3) {
+          const pastDate = new Date();
+          pastDate.setMonth(pastDate.getMonth() - 3);
+          const nowDate = new Date().toISOString(); // 💡 現在の日時を取得
 
-        await supabase.from('assessment_results').insert([
-          // 3ヶ月前
-          { company_id: currentCompanyId, employee_id: emps[0].id, type_str: 'HHLH', tier: 1, percentages: { H: 70, E: 65, R: 60, O: 75 }, user_id: currentUserId, created_at: pastDate.toISOString() },
-          { company_id: currentCompanyId, employee_id: emps[1].id, type_str: 'LLLL', tier: 1, percentages: { H: 30, E: 20, R: 40, O: 30 }, user_id: currentUserId, created_at: pastDate.toISOString() },
-          { company_id: currentCompanyId, employee_id: emps[2].id, type_str: 'HHHH', tier: 1, percentages: { H: 80, E: 75, R: 85, O: 80 }, user_id: currentUserId, created_at: pastDate.toISOString() }, // デモCは3ヶ月前は元気だった
-          // 現在
-          { company_id: currentCompanyId, employee_id: emps[0].id, type_str: 'HHHH', tier: 1, percentages: { H: 90, E: 85, R: 80, O: 95 }, user_id: currentUserId },
-          { company_id: currentCompanyId, employee_id: emps[1].id, type_str: 'LLHL', tier: 1, percentages: { H: 40, E: 30, R: 75, O: 45 }, user_id: currentUserId },
-          { company_id: currentCompanyId, employee_id: emps[2].id, type_str: 'LLLL', tier: 1, percentages: { H: 45, E: 35, R: 40, O: 35 }, user_id: currentUserId } // デモCは現在急降下（高リスク化）
-        ]);
-      }
-      await fetchEmployeesData(currentCompanyId);
-    } catch (error) {
-      alert("生成失敗");
+          const { error: resError } = await supabase.from('assessment_results').insert([
+            // 3ヶ月前のデータ
+            { company_id: currentCompanyId, employee_id: emps[0].id, type_str: 'HHLH', tier: 1, percentages: { H: 70, E: 65, R: 60, O: 75 }, created_at: pastDate.toISOString() },
+            { company_id: currentCompanyId, employee_id: emps[1].id, type_str: 'LLLL', tier: 1, percentages: { H: 30, E: 20, R: 40, O: 30 }, created_at: pastDate.toISOString() },
+            { company_id: currentCompanyId, employee_id: emps[2].id, type_str: 'HHHH', tier: 1, percentages: { H: 80, E: 75, R: 85, O: 80 }, created_at: pastDate.toISOString() }, 
+            
+            // 💡 現在のデータ（nowDateを明記して空欄エラーを防ぐ）
+            { company_id: currentCompanyId, employee_id: emps[0].id, type_str: 'HHHH', tier: 1, percentages: { H: 90, E: 85, R: 80, O: 95 }, created_at: nowDate },
+            { company_id: currentCompanyId, employee_id: emps[1].id, type_str: 'LLHL', tier: 1, percentages: { H: 40, E: 30, R: 75, O: 45 }, created_at: nowDate },
+            { company_id: currentCompanyId, employee_id: emps[2].id, type_str: 'LLLL', tier: 1, percentages: { H: 45, E: 35, R: 40, O: 35 }, created_at: nowDate } 
+          ]);
+
+          if (resError) throw resError;
+        }
+      
+      await loadCompanySpecificData(currentCompanyId);
+    } catch (error: any) {
+      console.error("Test Data Error:", error);
+      alert("生成に失敗しました: " + error.message);
     } finally {
       setLoading(false);
     }
@@ -325,22 +349,16 @@ function DashboardContent() {
     return "rose";
   };
 
-  // ==========================================
-  // 💡 第3段で追加：従業員ごとの離職リスク判定ロジック
-  // ==========================================
   const checkRetentionRisk = (results: any[]) => {
     if (!results || results.length === 0) return { label: '未受診', color: 'gray' as const };
     
-    // 時系列順にソート（最新が[0]）
     const sorted = [...results].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
     const latest = sorted[0].percentages;
     const latestAvg = (latest.H + latest.E + latest.R + latest.O) / 4;
 
-    // 過去データがある場合、前回スコアと比較
     const previous = sorted[1]?.percentages;
     const prevAvg = previous ? (previous.H + previous.E + previous.R + previous.O) / 4 : latestAvg;
 
-    // 🚨 アルゴリズム：スコアが50pt未満に低迷し、かつ前回から15pt以上急降下している場合
     if (latestAvg < 50 && (prevAvg - latestAvg) >= 15) {
       return { label: '⚠️ 要フォロー (高リスク)', color: 'rose' as const };
     }
@@ -358,13 +376,33 @@ function DashboardContent() {
     <div className="min-h-screen bg-slate-50 p-8 print:bg-white print:p-0">
       <div className="max-w-7xl mx-auto space-y-6 relative animate-fade-in">
         
-        {/* 💡 印刷時はこのアクションヘッダーごと非表示（print:hidden）になります */}
         <div className="flex justify-between items-end border-b pb-4 print:hidden">
           <div>
             <Title className="text-3xl font-bold text-slate-800">HRマネジメント・ダッシュボード</Title>
             <Text className="mt-1">
               ログインアカウント: <span className="font-medium text-blue-600">{userEmail}</span>
             </Text>
+
+            {/* 💡 企業切り替え用プルダウンメニュー */}
+            {adminCompanies.length > 0 && (
+              <div className="mt-4 flex items-center gap-3">
+                <Text className="font-bold text-slate-700">表示中の企業・組織:</Text>
+                <div className="w-64">
+                  <Select 
+                    value={currentCompanyId} 
+                    onValueChange={handleCompanyChange}
+                    enableClear={false}
+                  >
+                    {adminCompanies.map(c => (
+                      <SelectItem key={c.id} value={c.id}>
+                        {c.name ? `${c.name} (${c.id})` : c.id}
+                      </SelectItem>
+                    ))}
+                  </Select>
+                </div>
+              </div>
+            )}
+
           </div>
           <div className="flex gap-4 items-center">
             <Button variant="light" onClick={() => router.push('/admin-login')}>← 戻る</Button>
@@ -377,7 +415,6 @@ function DashboardContent() {
           </div>
         </div>
 
-        {/* 💡 PDF印刷時のみ、上部に美しいレポートタイトルを表示する（通常時は非表示） */}
         <div className="hidden print:block border-b-2 border-slate-800 pb-4 mb-6">
           <Title className="text-3xl font-bold text-slate-900">心理的資本アセスメント 組織開発レポート</Title>
           <Text className="text-sm mt-1 text-slate-600">出力日時: {new Date().toLocaleDateString('ja-JP')} | 対象企業ID: {currentCompanyId}</Text>
@@ -391,7 +428,6 @@ function DashboardContent() {
           </Card>
         ) : (
           <div className="space-y-6">
-            {/* Row 1: KPIカード群 */}
             <Grid numItemsSm={1} numItemsLg={3} className="gap-6 print:grid-cols-3">
               <Card decoration="top" decorationColor="blue" className="print:shadow-none print:border">
                 <Text>アセスメント受診者数</Text>
@@ -403,7 +439,7 @@ function DashboardContent() {
                   <Metric>{trendMetrics.currentAvg} pt</Metric>
                   <BadgeDelta 
                     deltaType={trendMetrics.improvement > 0 ? 'increase' : trendMetrics.improvement < 0 ? 'decrease' : 'unchanged'}
-                    className="print:hidden" // 印刷時は増減バッジアイコンを非表示にしてスッキリさせる
+                    className="print:hidden" 
                   >
                     {trendMetrics.improvement > 0 ? '+' : ''}{trendMetrics.improvement} pt (初回比)
                   </BadgeDelta>
@@ -416,7 +452,6 @@ function DashboardContent() {
               </Card>
             </Grid>
 
-            {/* Row 2: 経時変化＆部署比較グラフ */}
             <Grid numItemsSm={1} numItemsLg={2} className="gap-6 print:grid-cols-2">
               <Card className="print:shadow-none print:border">
                 <Title>心理的資本の経時変化（スコア推移）</Title>
@@ -444,7 +479,6 @@ function DashboardContent() {
               </Card>
             </Grid>
 
-            {/* Row 3: AIレポート＆タイプ分布 */}
             <Grid numItemsSm={1} numItemsLg={3} className="gap-6 print:grid-cols-3">
              {aiReport || pastReports.length > 0 ? (
                 <Card className="bg-fuchsia-50 border-fuchsia-200 flex flex-col h-[340px] lg:col-span-2 print:shadow-none print:border print:bg-white print:h-auto print:col-span-2">
@@ -483,10 +517,8 @@ function DashboardContent() {
               </Card>
             </Grid>
 
-            {/* 💡 ページをまたぐ際の印刷崩れを防ぐ設定（改ページ制御） */}
             <div className="print:break-before-page pt-4"></div>
 
-            {/* Row 4: 従業員テーブル */}
             <Card className="print:shadow-none print:border">
               <div className="flex justify-between items-center mb-4">
                 <Title>従業員アセスメント・コンディション一覧</Title>
@@ -515,8 +547,6 @@ function DashboardContent() {
                     const results = emp.assessment_results;
                     const latestResult = results && results.length > 0 ? [...results].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())[0] : null;
                     const p = latestResult?.percentages;
-                    
-                    // 💡 リスク状態を取得
                     const risk = checkRetentionRisk(results);
 
                     return (
@@ -532,7 +562,6 @@ function DashboardContent() {
                         <TableCell>{p ? <Badge color={getScoreColor(p.R)}>{Math.round(p.R)}%</Badge> : '-'}</TableCell>
                         <TableCell>{p ? <Badge color={getScoreColor(p.O)}>{Math.round(p.O)}%</Badge> : '-'}</TableCell>
                         <TableCell>
-                          {/* 💡 離職リスク状態をカラーバッジで表示 */}
                           <Badge color={risk.color}>{risk.label}</Badge>
                         </TableCell>
                         <TableCell>{latestResult ? new Date(latestResult.created_at).toLocaleDateString('ja-JP') : '-'}</TableCell>
@@ -548,7 +577,6 @@ function DashboardContent() {
           </div>
         )}
 
-        {/* プレミアム機能制限のポップアップ */}
         {showPaywall && (
           <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 backdrop-blur-sm transition-opacity">
             <Card className="max-w-lg w-full mx-4 bg-white shadow-2xl border-t-4 border-fuchsia-500">
