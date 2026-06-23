@@ -2,7 +2,6 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-// 💡 修正1: 'react' から Suspense を追加で読み込む
 import { useState, Suspense } from 'react'; 
 import { Card, Title, Button, TextInput } from '@tremor/react';
 import { heroData, calculateScore } from '@/utils/heroData';
@@ -10,7 +9,6 @@ import { useSearchParams } from 'next/navigation';
 
 type ScreenState = 'home' | 'entry' | 'quiz' | 'result';
 
-// 💡 修正2: 「AssessmentPage」という名前を「AssessmentContent」に変更する（export default は外す）
 function AssessmentContent() {
   const searchParams = useSearchParams();
   const cid = searchParams.get('cid');
@@ -279,7 +277,6 @@ function AssessmentContent() {
   );
 }
 
-// 💡 修正3: ファイルの一番最後に、Suspenseで包んだ「本来のAssessmentPage」を新しく作る
 export default function AssessmentPage() {
   return (
     <Suspense fallback={<div className="min-h-screen flex items-center justify-center">画面を準備中...</div>}>
