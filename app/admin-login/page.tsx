@@ -36,11 +36,10 @@ export default function AdminLogin() {
       .eq('admin_user_id', authData.user.id)
       .maybeSingle();
 
-    // ③ 管理者として紐付けられていない一般ユーザーだった場合
+    // ③ 管理者として紐付けられていない新規登録ユーザーだった場合
     if (!companyData) {
-      await supabase.auth.signOut(); // 💡 即座に強制ログアウト！
-      setError('このアカウントにはダッシュボードの閲覧権限がありません。一般受診用ページからログインしてください。');
-      setLoading(false);
+      // 💡 追い出さずに、企業コードの「初期設定画面」へ誘導する！
+      router.push('/dashboard/settings'); 
       return;
     }
 

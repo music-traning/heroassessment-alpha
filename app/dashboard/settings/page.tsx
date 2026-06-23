@@ -18,7 +18,7 @@ function SettingsContent() {
     const checkUser = async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        router.push('/login');
+        router.push('/admin-login'); 
       }
       setIsFetching(false);
     };
@@ -34,7 +34,7 @@ function SettingsContent() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error("ユーザー情報の取得に失敗しました");
 
-      // 💡 修正1：upsert（上書き許可）を insert（新規のみ）に変更する
+      // 新規企業コードと自分（管理者）の紐付け
       const { error } = await supabase
         .from('companies')
         .insert([
@@ -45,15 +45,19 @@ function SettingsContent() {
           }
         ]);
 
-      // 💡 修正2：すでに使われている場合（一意制約エラー）のメッセージをわかりやすくする
       if (error) {
-        if (error.code === '23505') { // 23505はデータベースの「重複エラー」のコードです
+        if (error.code === '23505') { 
           throw new Error("この企業コードは既に他の企業に使用されています。別のコードに変更してください。");
         }
         throw error;
       }
 
-      setMessage({ text: '企業コードの登録が完了しました！従業員に共有してください。', isError: false });
+      setMessage({ text: '企業コードの登録が完了しました！ダッシュボードへ移動します...', isError: false });
+      
+      setTimeout(() => {
+        router.push('/dashboard');
+      }, 1500);
+
     } catch (error: any) {
       setMessage({ text: `登録に失敗しました: ${error.message}`, isError: true });
     } finally {
@@ -65,14 +69,16 @@ function SettingsContent() {
 
   return (
     <div className="min-h-screen bg-slate-50 p-8">
-      <div className="max-w-2xl mx-auto animate-fade-in">
-        <div className="flex justify-between items-center mb-6">
+      <div className="max-w-3xl mx-auto animate-fade-in space-y-8">
+        
+        <div className="flex justify-between items-center border-b pb-4">
           <Title className="text-2xl font-bold text-slate-800">⚙️ 企業コード設定</Title>
-          <Button variant="light" onClick={() => router.back()}>
+          <Button variant="light" onClick={() => router.push('/dashboard')}>
             ← ダッシュボードに戻る
           </Button>
         </div>
 
+        {/* 登録フォームセクション */}
         <Card>
           <Text className="mb-6 leading-relaxed">
             従業員がアセスメントを受診する際に入力する「企業コード」を作成します。
@@ -88,7 +94,7 @@ function SettingsContent() {
                 onChange={(e) => setCompanyCode(e.target.value)}
                 required
               />
-              <Text className="text-xs text-slate-500 mt-1">※このコードが認証用のパスワード代わりになります。</Text>
+              <Text className="text-xs text-slate-500 mt-1">※このコードが受診時の認証キー（パスワード代わり）になります。</Text>
             </div>
 
             <div>
@@ -107,11 +113,58 @@ function SettingsContent() {
               </div>
             )}
 
-            <Button type="submit" className="w-full" loading={loading} disabled={!companyCode}>
+            <Button type="submit" className="w-full h-12 text-base" loading={loading} disabled={!companyCode}>
               この企業コードを登録する
             </Button>
           </form>
         </Card>
+
+        {/* 💡 ここから下が追加したヘルプ＆Tipsセクションです */}
+        <div className="space-y-4 pt-4">
+          <Title className="text-xl font-bold text-slate-800">📖 今後の使い方と運用ガイド</Title>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <Card className="bg-blue-50 border-blue-100 p-5">
+              <div className="text-blue-900 font-bold mb-2 flex items-center gap-2">
+                <span className="bg-blue-200 text-blue-900 w-6 h-6 rounded-full flex items-center justify-center text-xs">1</span>
+                社員へ共有する
+              </div>
+              <Text className="text-sm text-blue-800 leading-relaxed">
+                作成した「企業コード」と受診用ページのURLを、対象の従業員にメールやチャットで共有してください。
+              </Text>
+            </Card>
+
+            <Card className="bg-indigo-50 border-indigo-100 p-5">
+              <div className="text-indigo-900 font-bold mb-2 flex items-center gap-2">
+                <span className="bg-indigo-200 text-indigo-900 w-6 h-6 rounded-full flex items-center justify-center text-xs">2</span>
+                従業員が受診する
+              </div>
+              <Text className="text-sm text-indigo-800 leading-relaxed">
+                従業員が各自でアカウントを作成し、初回受診時に企業コードを入力すると、自動的に貴社のデータとして紐付きます。
+              </Text>
+            </Card>
+
+            <Card className="bg-fuchsia-50 border-fuchsia-100 p-5">
+              <div className="text-fuchsia-900 font-bold mb-2 flex items-center gap-2">
+                <span className="bg-fuchsia-200 text-fuchsia-900 w-6 h-6 rounded-full flex items-center justify-center text-xs">3</span>
+                ダッシュボードで分析
+              </div>
+              <Text className="text-sm text-fuchsia-800 leading-relaxed">
+                受診が完了すると、リアルタイムでダッシュボードに反映されます。AI分析を使って組織の強みや課題を発見しましょう。
+              </Text>
+            </Card>
+          </div>
+
+          {/* 応用のTips */}
+          <Card className="bg-slate-100 border-slate-200 mt-4 p-6 border-l-4 border-l-slate-400">
+            <p className="font-bold text-slate-700 mb-2">💡 運用を成功させるための応用テクニック</p>
+            <ul className="list-disc list-inside text-sm text-slate-600 space-y-2 leading-relaxed">
+              <li><b>部署名のアナウンス：</b> 従業員が受診する際、部署名は手入力となります。AIに正確な部署ごとの傾向を分析させるため、事前に「部署名は『営業部』『開発部』のように正式名称で入力してください」とアナウンスしておくことをお勧めします。</li>
+              <li><b>定期的なアセスメント：</b> 組織の状態は変化します。半年に1回など、定期的に受診を促すことで、施策の効果測定やコンピテンシーの推移を追跡できるようになります。</li>
+            </ul>
+          </Card>
+        </div>
+
       </div>
     </div>
   );
