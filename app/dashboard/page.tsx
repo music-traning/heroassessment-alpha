@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+// 💡 修正1: Suspense を追加
+import { useState, useEffect, useMemo, Suspense } from 'react';
 import { supabase } from '@/utils/supabase';
 import { 
   Card, Title, Text, Button, Table, TableHead, TableRow, TableHeaderCell, 
@@ -21,7 +22,8 @@ type EmployeeData = {
   }[];
 };
 
-export default function DashboardPage() {
+// 💡 修正2: 「DashboardPage」という名前を「DashboardContent」に変更し、export default を外す
+function DashboardContent() {
   const router = useRouter();
   
   // データ保持用のState
@@ -40,11 +42,9 @@ export default function DashboardPage() {
   // ==========================================
   useEffect(() => {
     const initDashboard = async () => {
-      // 💡 古い手動ログイン画面を廃止し、Supabaseのチケットを自動確認
       const { data: { user }, error } = await supabase.auth.getUser();
       
       if (error || !user) {
-        // 万が一チケットがなければログイン画面に弾く
         router.push('/login');
         return;
       }
@@ -59,7 +59,6 @@ export default function DashboardPage() {
   const fetchEmployeesData = async (userId: string) => {
     setLoading(true);
     try {
-      // 企業コードの代わりに、ユーザーIDに紐づくデータを取得
       const { data: empData, error: empError } = await supabase
         .from('employees')
         .select(`
@@ -114,7 +113,6 @@ export default function DashboardPage() {
   // 3. AI分析処理（プラン判定）
   // ==========================================
   const generateAiReport = async () => {
-    // 💡 ご自身のテスト用メールアドレスをここに記載してください
     const premiumEmails = ['admin@example.com']; 
 
     if (!premiumEmails.includes(userEmail)) {
@@ -153,7 +151,7 @@ export default function DashboardPage() {
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
-    router.push('/login'); // ログアウト後はログイン画面へ
+    router.push('/login'); 
   };
 
   // ==========================================
@@ -206,7 +204,6 @@ export default function DashboardPage() {
             </Text>
           </div>
           <div className="flex gap-4 items-center">
-            {/* 💡 追加：前の画面に戻るボタン */}
             <Button variant="light" onClick={() => router.back()}>
               ← 前に戻る
             </Button>
@@ -214,7 +211,6 @@ export default function DashboardPage() {
             <Button color="fuchsia" onClick={generateAiReport} loading={isAnalyzing} disabled={employees.length === 0}>
               ✨ AI組織分析を実行する（プレミアム）
             </Button>
-            {/* 💡 ログアウトボタンを設置 */}
             <Button variant="secondary" onClick={handleLogout}>
               ログアウト
             </Button>
@@ -309,5 +305,14 @@ export default function DashboardPage() {
         )}
       </div>
     </div>
+  );
+}
+
+// 💡 修正3: Suspenseで包んだ大枠を作成
+export default function DashboardPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-slate-50 text-slate-500">ダッシュボードを準備中...</div>}>
+      <DashboardContent />
+    </Suspense>
   );
 }
