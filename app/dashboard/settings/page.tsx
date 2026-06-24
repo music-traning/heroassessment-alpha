@@ -39,7 +39,8 @@ const handleSave = async (e: React.FormEvent) => {
         },
         body: JSON.stringify({ 
           companyCode: companyCode, 
-          companyName: companyName 
+          companyName: companyName,
+          admin_user_id: (await supabase.auth.getUser()).data.user?.id || null // 現在ログインしているユーザーのIDを送信 
         }),
       });
 
