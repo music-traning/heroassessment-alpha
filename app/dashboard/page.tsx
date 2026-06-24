@@ -50,6 +50,32 @@ function DashboardContent() {
   const [selectedEmployee, setSelectedEmployee] = useState<EmployeeData | null>(null);
   const [individualAiReport, setIndividualAiReport] = useState<string>('');
   const [isIndividualAnalyzing, setIsIndividualAnalyzing] = useState(false);
+  const [pastIndividualReports, setPastIndividualReports] = useState<any[]>([]);
+
+  // 2. モーダルを開く＆データを取得する専用関数の追加
+const handleOpenIndividualModal = async (emp: EmployeeData) => {
+  setSelectedEmployee(emp);
+  setIndividualAiReport(''); // 画面リセット
+  setPastIndividualReports([]); // 履歴リセット
+
+  try {
+    // Supabaseからこの社員の過去レポートを取得（新しい順）
+    const { data, error } = await supabase
+      .from('individual_ai_reports')
+      .select('*')
+      .eq('employee_id', emp.id)
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
+    
+    if (data && data.length > 0) {
+      setPastIndividualReports(data);
+      setIndividualAiReport(data[0].report_content); // 最新のレポートを初期表示
+    }
+  } catch (err) {
+    console.error("個別レポート履歴の取得に失敗しました", err);
+  }
+};
 
   // ==========================================
   // 1. 初期化：データ取得
@@ -378,8 +404,8 @@ function DashboardContent() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 p-8 print:bg-white print:p-0">
-      <div className="max-w-7xl mx-auto space-y-6 relative animate-fade-in">
+   <div className={`min-h-screen bg-slate-50 p-8 ${selectedEmployee ? 'print:bg-transparent print:p-0' : 'print:bg-white print:p-0'}`}>
+      <div className={`max-w-7xl mx-auto space-y-6 relative animate-fade-in ${selectedEmployee ? 'print:hidden' : ''}`}>
         
         <div className="flex justify-between items-end border-b pb-4 print:hidden">
           <div>
@@ -571,10 +597,9 @@ function DashboardContent() {
                         </TableCell>
                         <TableCell>{latestResult ? new Date(latestResult.created_at).toLocaleDateString('ja-JP') : '-'}</TableCell>
                         <TableCell className="print:hidden flex gap-2">
-                          <Button size="xs" variant="secondary" onClick={() => {
-                            setSelectedEmployee(emp);
-                            setIndividualAiReport(''); // 以前のレポートをリセット
-                          }}>詳細分析</Button>
+                          <Button size="xs" variant="secondary" onClick={() => handleOpenIndividualModal(emp)}>
+                            詳細分析
+                          </Button>
                           <Button size="xs" variant="light" color="red" onClick={() => setDeleteTargetId(emp.id)}>削除</Button>
                         </TableCell>
                       </TableRow>
@@ -617,87 +642,148 @@ function DashboardContent() {
           </div>
         )}
       </div>
-      // 削除モーダルの下あたりに追加
+     
 {selectedEmployee && (
-  <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 backdrop-blur-sm transition-opacity p-4">
-    <Card className="max-w-5xl w-full h-[90vh] bg-white shadow-2xl flex flex-col relative overflow-hidden">
-      
-      {/* ヘッダー部分 */}
-      <div className="flex justify-between items-start border-b pb-4 mb-4 shrink-0">
-        <div>
-          <Badge color="blue">{selectedEmployee.department}</Badge>
-          <Title className="text-2xl font-bold mt-2 text-slate-800">{selectedEmployee.employee_id_or_name} <span className="text-sm font-normal text-slate-500">({selectedEmployee.role})</span></Title>
-        </div>
-        <Button variant="light" color="gray" onClick={() => setSelectedEmployee(null)}>✕ 閉じる</Button>
-      </div>
+          <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 backdrop-blur-sm transition-opacity p-4 print:static print:bg-transparent print:p-0">
+            {/* 💡 print:max-w-none を追加し、印刷時は画面幅の制限を解除してA4用紙いっぱいに広げる */}
+            <Card className="max-w-5xl w-full h-[90vh] bg-white shadow-2xl flex flex-col relative overflow-hidden print:shadow-none print:border-none print:h-auto print:overflow-visible print:block print:max-w-none print:p-0">
+              
+              {/* ヘッダー部分 */}
+              <div className="flex justify-between items-start border-b pb-4 mb-4 shrink-0 print:border-slate-800 print:mb-8">
+                <div>
+                  <Badge color="blue" className="print:border print:border-blue-500">{selectedEmployee.department}</Badge>
+                  <Title className="text-2xl font-bold mt-2 text-slate-800">{selectedEmployee.employee_id_or_name} <span className="text-sm font-normal text-slate-500">({selectedEmployee.role})</span></Title>
+                </div>
+                
+                {/* 印刷・閉じるボタン（印刷時は非表示） */}
+                <div className="flex items-center gap-4 print:hidden">
+                  <Button variant="primary" color="blue" onClick={() => window.print()}>
+                    🖨️ PDF・会議資料を出力
+                  </Button>
+                  <Button variant="light" color="gray" onClick={() => setSelectedEmployee(null)}>✕ 閉じる</Button>
+                </div>
+              </div>
 
-      <div className="overflow-y-auto flex-1 pr-2 space-y-6">
-        {/* 個人の時系列グラフ */}
-        <Card className="shadow-none border border-slate-200">
-          <Title>HEROスコアの推移</Title>
-          <LineChart
-            className="h-64 mt-4"
-            data={
-              [...selectedEmployee.assessment_results]
-                .sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime())
-                .map(res => ({
-                  '受診日': new Date(res.created_at).toLocaleDateString('ja-JP'),
-                  'Hope': res.percentages.H,
-                  'Efficacy': res.percentages.E,
-                  'Resilience': res.percentages.R,
-                  'Optimism': res.percentages.O
-                }))
-            }
-            index="受診日"
-            categories={["Hope", "Efficacy", "Resilience", "Optimism"]}
-            colors={["blue", "teal", "amber", "rose"]}
-            valueFormatter={(number) => `${number}%`}
-            yAxisWidth={40}
-            minValue={0}
-            maxValue={100}
-          />
-        </Card>
+              {/* スクロール領域（印刷時は全表示に切り替わる） */}
+              <div className="overflow-y-auto flex-1 pr-2 space-y-6 print:overflow-visible print:space-y-8">
+                
+                {/* 個人の時系列グラフ */}
+                {/* 💡 print:break-inside-avoid でグラフが半分に切れるのを防ぐ */}
+                <Card className="shadow-none border border-slate-200 print:border-none print:p-0 print:break-inside-avoid">
+                  <Title>HEROスコアの推移</Title>
+                  <LineChart
+                    className="h-64 mt-4 print:h-72"
+                    data={
+                      [...selectedEmployee.assessment_results]
+                        .sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime())
+                        .map(res => ({
+                          '受診日': new Date(res.created_at).toLocaleDateString('ja-JP'),
+                          'Hope': res.percentages.H,
+                          'Efficacy': res.percentages.E,
+                          'Resilience': res.percentages.R,
+                          'Optimism': res.percentages.O
+                        }))
+                    }
+                    index="受診日"
+                    categories={["Hope", "Efficacy", "Resilience", "Optimism"]}
+                    colors={["blue", "teal", "amber", "rose"]}
+                    valueFormatter={(number) => `${number}%`}
+                    yAxisWidth={40}
+                    minValue={0}
+                    maxValue={100}
+                  />
+                </Card>
 
-        {/* 個人向けAI分析セクション */}
-        <Card className="bg-fuchsia-50 border-fuchsia-200 shadow-none">
-          <div className="flex justify-between items-center mb-4">
-            <Title className="text-fuchsia-800 flex items-center gap-2">✨ 個別時系列AI分析</Title>
-            <Button 
-              color="fuchsia" 
-              loading={isIndividualAnalyzing}
-              onClick={async () => {
-                setIsIndividualAnalyzing(true);
-                try {
-                  // ※後述：ここに個別のAPIルートを叩く処理を書きます
-                  const response = await fetch('/api/analyze-individual', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ 
-                      name: selectedEmployee.employee_id_or_name,
-                      history: selectedEmployee.assessment_results
-                    })
-                  });
-                  const data = await response.json();
-                  if (!response.ok) throw new Error(data.error);
-                  setIndividualAiReport(data.report);
-                } catch (error: any) {
-                  alert(error.message);
-                } finally {
-                  setIsIndividualAnalyzing(false);
-                }
-              }}
-            >
-              この利用者の推移を分析する
-            </Button>
+                {/* 個人向けAI分析セクション */}
+                <Card className="bg-fuchsia-50 border-fuchsia-200 shadow-none print:bg-white print:border-none print:p-0">
+                  <div className="flex justify-between items-center mb-4 flex-wrap gap-4 print:hidden">
+                    <div className="flex items-center gap-4">
+                      <Title className="text-fuchsia-800 flex items-center gap-2">✨ 個別時系列AI分析</Title>
+                      
+                      {/* プルダウン履歴（印刷時は非表示） */}
+                      {pastIndividualReports.length > 0 && (
+                        <div className="w-56">
+                          <Select
+                            value={individualAiReport}
+                            onValueChange={(val) => setIndividualAiReport(val)}
+                            placeholder="過去の分析履歴"
+                          >
+                            {pastIndividualReports.map((report, idx) => (
+                              <SelectItem key={report.id} value={report.report_content}>
+                                {new Date(report.created_at).toLocaleDateString('ja-JP')} の分析 {idx === 0 && '(最新)'}
+                              </SelectItem>
+                            ))}
+                          </Select>
+                        </div>
+                      )}
+                    </div>
+
+                    <Button 
+                      color="fuchsia" 
+                      loading={isIndividualAnalyzing}
+                      onClick={async () => {
+                        setIsIndividualAnalyzing(true);
+                        try {
+                          const response = await fetch('/api/analyze-individual', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ 
+                              companyId: currentCompanyId,
+                              employeeId: selectedEmployee.id,
+                              name: selectedEmployee.employee_id_or_name,
+                              history: selectedEmployee.assessment_results
+                            })
+                          });
+                          const data = await response.json();
+                          if (!response.ok) throw new Error(data.error);
+                          
+                          setIndividualAiReport(data.report);
+                          setPastIndividualReports(prev => [
+                            {
+                              id: 'temp-' + Date.now(),
+                              report_content: data.report,
+                              created_at: new Date().toISOString()
+                            },
+                            ...prev
+                          ]);
+                        } catch (error: any) {
+                          alert(error.message);
+                        } finally {
+                          setIsIndividualAnalyzing(false);
+                        }
+                      }}
+                    >
+                      最新の推移を分析する
+                    </Button>
+                  </div>
+                  
+                  {/* AIレポート出力部分 */}
+                  {/* 💡 本文が長い場合は自然に改ページさせたいので break-inside-avoid は入れない。文字色を黒に固定 */}
+                  <div className="prose max-w-none text-slate-700 whitespace-pre-wrap text-sm leading-relaxed min-h-[150px] print:text-black print:leading-loose">
+                    {individualAiReport ? individualAiReport : "「最新の推移を分析する」ボタンを押すと、過去の推移データから今後の具体的な支援計画（ISSP）に使えるドラフトレポートを生成します。"}
+                  </div>
+                </Card>
+              </div>
+              
+              {/* 印刷時のみ表示される、会議用の署名・メモ欄（通常画面では非表示） */}
+              {/* 💡 print:break-inside-avoid を付け、署名欄がページまたぎでバラバラにならないようにする */}
+              <div className="hidden print:block mt-12 pt-8 border-t-2 border-slate-800 print:break-inside-avoid">
+                <div className="flex justify-between items-end">
+                  <div>
+                    <p className="text-sm font-bold text-slate-800">ISSP（個別支援計画）策定会議 添付資料</p>
+                    <p className="text-xs text-slate-500 mt-1">出力日: {new Date().toLocaleDateString('ja-JP')} / HERO Assessment System</p>
+                  </div>
+                  <div className="flex gap-8">
+                    <div className="w-24 border-b border-slate-400 pb-1 text-xs text-slate-500 text-center">施設長印</div>
+                    <div className="w-24 border-b border-slate-400 pb-1 text-xs text-slate-500 text-center">サビ管印</div>
+                    <div className="w-24 border-b border-slate-400 pb-1 text-xs text-slate-500 text-center">担当者印</div>
+                  </div>
+                </div>
+              </div>
+
+            </Card>
           </div>
-          <div className="prose max-w-none text-slate-700 whitespace-pre-wrap text-sm leading-relaxed min-h-[150px]">
-            {individualAiReport ? individualAiReport : "ボタンを押すと、過去の推移データから今後の具体的な支援計画（ISSP）に使えるAIレポートを生成します。"}
-          </div>
-        </Card>
-      </div>
-    </Card>
-  </div>
-)}
+        )}
     </div>
   );
 }

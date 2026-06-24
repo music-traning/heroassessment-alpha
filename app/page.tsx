@@ -260,30 +260,102 @@ function AssessmentContent() {
             診断結果では、上記のHEROそれぞれのスコアが高い（High）か低い（Low）かによって、2の4乗＝<strong>全16タイプの傾向</strong>に分類されます。これは「性格の優劣」ではなく、<strong>現在のあなたがどの部分でエネルギーを消費しやすいか、どこを強みとしているか</strong>を示す状態（State）です。
           </p>
           <div className="bg-white border rounded-lg p-5">
-            <h4 className="font-bold text-slate-800 mb-3 border-b pb-2">💡 代表的なタイプの例</h4>
-            <ul className="space-y-4 text-sm">
-              <li>
-                <strong className="inline-block w-16 text-blue-600">HHHH</strong>
-                <span className="font-bold text-slate-700">自律型ハイパフォーマー</span><br/>
-                全要素が高く、自ら目標を掲げて逆境も乗り越える理想的な状態。ただし、無理をしすぎないよう適度な休息が必要です。
-              </li>
-              <li>
-                <strong className="inline-block w-16 text-rose-600">LLLL</strong>
-                <span className="font-bold text-slate-700">枯渇/バーンアウト予備軍</span><br/>
-                一時的にエネルギーが低下している状態。まずは心身の回復を最優先にし、小さな成功体験を積むことが推奨されます。
-              </li>
-              <li>
-                <strong className="inline-block w-16 text-teal-600">HHLH</strong>
-                <span className="font-bold text-slate-700">前のめりチャレンジャー</span><br/>
-                意志や自信は高いものの、失敗時の復元力（R）が低め。一度挫折すると長引く可能性があるため、リスクヘッジの視点を持つことが鍵です。
-              </li>
-              <li>
-                <strong className="inline-block w-16 text-amber-600">LHHH</strong>
-                <span className="font-bold text-slate-700">サポーター/現状維持型</span><br/>
-                周囲の支援や自己効力感は高いが、自ら新しい目標（H）を立てるのが少し苦手。明確な指標やリーダーシップを与えられると輝きます。
-              </li>
-            </ul>
-            <p className="text-xs text-slate-400 mt-4">※これらはあくまで16種の一部です。診断後にあなた自身の詳細なプロフィールとアクションプランが表示されます。</p>
+            <h4 className="font-bold text-slate-800 mb-3 border-b pb-2">💡 全16パターンのタイプ解説</h4>
+            {/* 💡 16個あるため、高さを固定してスクロール可能にし、PCでは2列表示にする */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 text-sm h-96 overflow-y-auto pr-2 custom-scrollbar">
+              
+              {/* 4H (オールハイ) */}
+              <div className="border-b md:border-none pb-2 md:pb-0">
+                <strong className="inline-block w-14 text-blue-600">HHHH</strong>
+                <span className="font-bold text-slate-700">自律型ハイパフォーマー</span>
+                <p className="text-slate-600 mt-1 text-xs">全要素が高く、自ら目標を掲げて逆境も乗り越える理想的な状態。無理をしすぎないよう適度な休息が鍵。</p>
+              </div>
+
+              {/* 3H1L */}
+              <div className="border-b md:border-none pb-2 md:pb-0">
+                <strong className="inline-block w-14 text-indigo-600">HHHL</strong>
+                <span className="font-bold text-slate-700">完璧主義エグゼキューター</span>
+                <p className="text-slate-600 mt-1 text-xs">意志と実行力は高いが楽観性が低い状態。自分に厳しく確実な成果を出すが、精神的なゆとりを持ちにくい。</p>
+              </div>
+              <div className="border-b md:border-none pb-2 md:pb-0">
+                <strong className="inline-block w-14 text-teal-600">HHLH</strong>
+                <span className="font-bold text-slate-700">前のめりチャレンジャー</span>
+                <p className="text-slate-600 mt-1 text-xs">意欲と自信は高いが復元力が低め。勢いよく挑戦するが、一度挫折すると長引くためリスクヘッジが必要。</p>
+              </div>
+              <div className="border-b md:border-none pb-2 md:pb-0">
+                <strong className="inline-block w-14 text-cyan-600">HLHH</strong>
+                <span className="font-bold text-slate-700">慎重派バランサー</span>
+                <p className="text-slate-600 mt-1 text-xs">自己効力感（自信）だけが低い状態。ポテンシャルは高いため、小さな成功体験を積むことで一気に化ける。</p>
+              </div>
+              <div className="border-b md:border-none pb-2 md:pb-0">
+                <strong className="inline-block w-14 text-amber-600">LHHH</strong>
+                <span className="font-bold text-slate-700">安定志向サポーター</span>
+                <p className="text-slate-600 mt-1 text-xs">周囲の支援や実行力は高いが、自ら新しい目標（H）を立てるのは少し苦手。明確な指示があると輝く。</p>
+              </div>
+
+              {/* 2H2L */}
+              <div className="border-b md:border-none pb-2 md:pb-0">
+                <strong className="inline-block w-14 text-fuchsia-600">HHLL</strong>
+                <span className="font-bold text-slate-700">短期突破型プレーヤー</span>
+                <p className="text-slate-600 mt-1 text-xs">意欲と自信で一気に進むが、壁にぶつかった時の耐久力と楽観性が低い。短期決戦向けのコンディション。</p>
+              </div>
+              <div className="border-b md:border-none pb-2 md:pb-0">
+                <strong className="inline-block w-14 text-purple-600">HLHL</strong>
+                <span className="font-bold text-slate-700">堅実派ディフェンダー</span>
+                <p className="text-slate-600 mt-1 text-xs">目標意識と忍耐力はあるが、自信と楽観性に欠ける。石橋を叩いて渡る慎重さが求められる業務に適任。</p>
+              </div>
+              <div className="border-b md:border-none pb-2 md:pb-0">
+                <strong className="inline-block w-14 text-pink-600">HLLH</strong>
+                <span className="font-bold text-slate-700">理想追求型ビジョナリー</span>
+                <p className="text-slate-600 mt-1 text-xs">希望と楽観性は高いが、実行する自信と忍耐力が不足気味。アイデア出しは得意だが、実行面のサポートが必要。</p>
+              </div>
+              <div className="border-b md:border-none pb-2 md:pb-0">
+                <strong className="inline-block w-14 text-orange-600">LHHL</strong>
+                <span className="font-bold text-slate-700">職人気質スペシャリスト</span>
+                <p className="text-slate-600 mt-1 text-xs">与えられたタスクへの自信と忍耐力は高いが、未来への希望や楽観性が低い。目の前の実務に黙々と取り組む状態。</p>
+              </div>
+              <div className="border-b md:border-none pb-2 md:pb-0">
+                <strong className="inline-block w-14 text-lime-600">LHLH</strong>
+                <span className="font-bold text-slate-700">楽天的な実務家</span>
+                <p className="text-slate-600 mt-1 text-xs">自信と楽観性はあるが、自発的な目標設定や困難への忍耐力は低い。プレッシャーの少ない環境で力を発揮する。</p>
+              </div>
+              <div className="border-b md:border-none pb-2 md:pb-0">
+                <strong className="inline-block w-14 text-emerald-600">LLHH</strong>
+                <span className="font-bold text-slate-700">柔軟なムードメーカー</span>
+                <p className="text-slate-600 mt-1 text-xs">忍耐力と楽観性が高く、失敗しても明るく立ち直る。ただし自発的な意欲や自信は低いため牽引役が必要。</p>
+              </div>
+
+              {/* 1H3L */}
+              <div className="border-b md:border-none pb-2 md:pb-0">
+                <strong className="inline-block w-14 text-rose-500">HLLL</strong>
+                <span className="font-bold text-slate-700">孤軍奮闘の開拓者</span>
+                <p className="text-slate-600 mt-1 text-xs">「やりたい」という希望だけが空回りし、自信も耐久力もない状態。目標のハードルを大きく下げる必要がある。</p>
+              </div>
+              <div className="border-b md:border-none pb-2 md:pb-0">
+                <strong className="inline-block w-14 text-red-500">LHLL</strong>
+                <span className="font-bold text-slate-700">堅実遂行の熟練者</span>
+                <p className="text-slate-600 mt-1 text-xs">実務をこなす自信（E）だけは維持しているが、その他のエネルギーが枯渇気味。ルーチンワークに徹するべき時期。</p>
+              </div>
+              <div className="border-b md:border-none pb-2 md:pb-0">
+                <strong className="inline-block w-14 text-stone-500">LLHL</strong>
+                <span className="font-bold text-slate-700">忍耐強きサバイバー</span>
+                <p className="text-slate-600 mt-1 text-xs">ひたすら耐え忍ぶ復元力（R）だけで踏みとどまっている状態。これ以上の負荷は禁物であり、環境の改善が必要。</p>
+              </div>
+              <div className="border-b md:border-none pb-2 md:pb-0">
+                <strong className="inline-block w-14 text-yellow-500">LLLH</strong>
+                <span className="font-bold text-slate-700">楽観的ピースメーカー</span>
+                <p className="text-slate-600 mt-1 text-xs">「なんとかなる」という楽観性だけで保っている状態。行動を起こすエネルギーはないため、まずは休養が最優先。</p>
+              </div>
+
+              {/* 4L (オールロー) */}
+              <div className="pb-2 md:pb-0">
+                <strong className="inline-block w-14 text-slate-400">LLLL</strong>
+                <span className="font-bold text-slate-700">エネルギー充電フェーズ</span>
+                <p className="text-slate-600 mt-1 text-xs">全てのエネルギーが枯渇し、バーンアウト（燃え尽き）に近い状態。自己研鑽をストップし、徹底的な休養とケアが必須。</p>
+              </div>
+
+            </div>
+            <p className="text-xs text-slate-400 mt-4 pt-2 border-t text-center">※心理的資本（HERO）は性格ではなく「変動する状態（State）」です。点数が低い項目は、環境調整や支援によって開発可能です。</p>
           </div>
         </section>
 
