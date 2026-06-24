@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/utils/supabaseAdmin';
+import { createClient } from '@/utils/supabase/server'; // 💡 認証確認用の通常クライアント
 import { Ratelimit } from '@upstash/ratelimit';
 import { Redis } from '@upstash/redis';
 
@@ -7,6 +8,7 @@ const redis = new Redis({
   url: process.env.UPSTASH_REDIS_REST_URL!,
   token: process.env.UPSTASH_REDIS_REST_TOKEN!,
 });
+
 const ratelimit = new Ratelimit({
   redis: redis,
   limiter: Ratelimit.slidingWindow(5, '10 s'),
@@ -14,6 +16,7 @@ const ratelimit = new Ratelimit({
 
 export async function POST(req: Request) {
   try {
+    // 1. レートリミット（変更なし）
     const ip = req.headers.get('x-forwarded-for') ?? 'anonymous';
     const { success } = await ratelimit.limit(ip);
 
@@ -24,20 +27,33 @@ export async function POST(req: Request) {
       );
     }
 
+    // 💡 2. サーバーサイドでの「確実な」ユーザー認証検証
+    const supabase = await createClient();
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+
+    if (authError || !user) {
+      return NextResponse.json(
+        { error: '認証エラー：ログイン状態を確認できませんでした。' },
+        { status: 401 }
+      );
+    }
+    const adminUserId = user.id; // ✨ 偽装不可能な確実なユーザーID
+
+    // 💡 3. ペイロードの厳格なパース
     const payload = await req.json();
     
-    const targetId = payload.companyId || payload.id || payload.companyCode || payload.code || payload.company_code;
-    const companyName = payload.companyName || payload.name || payload.company_name || "";
-    // 💡 フロントエンドから送られてくるユーザーIDを受け取る
-    const adminUserId = payload.admin_user_id || payload.userId || payload.user_id || null;
+    // APIコントラクトを明確にし、特定のキー名だけを許可する
+    const targetId = payload.companyId;
+    const companyName = payload.companyName || "";
 
-    if (!targetId) {
+    if (!targetId || typeof targetId !== 'string') {
       return NextResponse.json(
         { error: "事業所コード（企業コード）が正しく送信されていません" },
         { status: 400 }
       );
     }
 
+    // 4. 重複チェック
     const { data: existingCompany, error: searchError } = await supabaseAdmin
       .from('companies')
       .select('id')
@@ -48,12 +64,12 @@ export async function POST(req: Request) {
 
     if (existingCompany) {
       return NextResponse.json(
-        { error: 'このコードはすでに使用されています。' },
+        { error: 'この企業コードはすでに使用されています。別のコードを入力してください。' },
         { status: 409 }
       );
     }
 
-    // 💡 データベースに新規登録（admin_user_idを含める）
+    // 5. データベースに新規登録（安全なユーザーIDを使用）
     const { error: insertError } = await supabaseAdmin
       .from('companies')
       .insert([
@@ -61,7 +77,7 @@ export async function POST(req: Request) {
           id: targetId, 
           name: companyName,
           plan: 'free',
-          admin_user_id: adminUserId // 追加した列に保存
+          admin_user_id: adminUserId // サーバーで検証したIDを保存
         }
       ]);
 

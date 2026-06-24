@@ -722,6 +722,11 @@ const handleOpenIndividualModal = async (emp: EmployeeData) => {
                       color="fuchsia" 
                       loading={isIndividualAnalyzing}
                       onClick={async () => {
+                        if (currentCompanyPlan !== 'premium') {
+                          setShowPaywall(true);
+                          return;
+                        }
+
                         setIsIndividualAnalyzing(true);
                         try {
                           const response = await fetch('/api/analyze-individual', {
