@@ -46,6 +46,11 @@ function DashboardContent() {
   const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
+  // 個別分析用のState
+  const [selectedEmployee, setSelectedEmployee] = useState<EmployeeData | null>(null);
+  const [individualAiReport, setIndividualAiReport] = useState<string>('');
+  const [isIndividualAnalyzing, setIsIndividualAnalyzing] = useState(false);
+
   // ==========================================
   // 1. 初期化：データ取得
   // ==========================================
@@ -565,7 +570,11 @@ function DashboardContent() {
                           <Badge color={risk.color}>{risk.label}</Badge>
                         </TableCell>
                         <TableCell>{latestResult ? new Date(latestResult.created_at).toLocaleDateString('ja-JP') : '-'}</TableCell>
-                        <TableCell className="print:hidden">
+                        <TableCell className="print:hidden flex gap-2">
+                          <Button size="xs" variant="secondary" onClick={() => {
+                            setSelectedEmployee(emp);
+                            setIndividualAiReport(''); // 以前のレポートをリセット
+                          }}>詳細分析</Button>
                           <Button size="xs" variant="light" color="red" onClick={() => setDeleteTargetId(emp.id)}>削除</Button>
                         </TableCell>
                       </TableRow>
@@ -608,6 +617,87 @@ function DashboardContent() {
           </div>
         )}
       </div>
+      // 削除モーダルの下あたりに追加
+{selectedEmployee && (
+  <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 backdrop-blur-sm transition-opacity p-4">
+    <Card className="max-w-5xl w-full h-[90vh] bg-white shadow-2xl flex flex-col relative overflow-hidden">
+      
+      {/* ヘッダー部分 */}
+      <div className="flex justify-between items-start border-b pb-4 mb-4 shrink-0">
+        <div>
+          <Badge color="blue">{selectedEmployee.department}</Badge>
+          <Title className="text-2xl font-bold mt-2 text-slate-800">{selectedEmployee.employee_id_or_name} <span className="text-sm font-normal text-slate-500">({selectedEmployee.role})</span></Title>
+        </div>
+        <Button variant="light" color="gray" onClick={() => setSelectedEmployee(null)}>✕ 閉じる</Button>
+      </div>
+
+      <div className="overflow-y-auto flex-1 pr-2 space-y-6">
+        {/* 個人の時系列グラフ */}
+        <Card className="shadow-none border border-slate-200">
+          <Title>HEROスコアの推移</Title>
+          <LineChart
+            className="h-64 mt-4"
+            data={
+              [...selectedEmployee.assessment_results]
+                .sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime())
+                .map(res => ({
+                  '受診日': new Date(res.created_at).toLocaleDateString('ja-JP'),
+                  'Hope': res.percentages.H,
+                  'Efficacy': res.percentages.E,
+                  'Resilience': res.percentages.R,
+                  'Optimism': res.percentages.O
+                }))
+            }
+            index="受診日"
+            categories={["Hope", "Efficacy", "Resilience", "Optimism"]}
+            colors={["blue", "teal", "amber", "rose"]}
+            valueFormatter={(number) => `${number}%`}
+            yAxisWidth={40}
+            minValue={0}
+            maxValue={100}
+          />
+        </Card>
+
+        {/* 個人向けAI分析セクション */}
+        <Card className="bg-fuchsia-50 border-fuchsia-200 shadow-none">
+          <div className="flex justify-between items-center mb-4">
+            <Title className="text-fuchsia-800 flex items-center gap-2">✨ 個別時系列AI分析</Title>
+            <Button 
+              color="fuchsia" 
+              loading={isIndividualAnalyzing}
+              onClick={async () => {
+                setIsIndividualAnalyzing(true);
+                try {
+                  // ※後述：ここに個別のAPIルートを叩く処理を書きます
+                  const response = await fetch('/api/analyze-individual', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                      name: selectedEmployee.employee_id_or_name,
+                      history: selectedEmployee.assessment_results
+                    })
+                  });
+                  const data = await response.json();
+                  if (!response.ok) throw new Error(data.error);
+                  setIndividualAiReport(data.report);
+                } catch (error: any) {
+                  alert(error.message);
+                } finally {
+                  setIsIndividualAnalyzing(false);
+                }
+              }}
+            >
+              この利用者の推移を分析する
+            </Button>
+          </div>
+          <div className="prose max-w-none text-slate-700 whitespace-pre-wrap text-sm leading-relaxed min-h-[150px]">
+            {individualAiReport ? individualAiReport : "ボタンを押すと、過去の推移データから今後の具体的な支援計画（ISSP）に使えるAIレポートを生成します。"}
+          </div>
+        </Card>
+      </div>
+    </Card>
+  </div>
+)}
     </div>
   );
 }
