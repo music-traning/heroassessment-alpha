@@ -26,9 +26,10 @@ export async function POST(req: Request) {
 
     const payload = await req.json();
     
-    // フロントからのデータを柔軟に受け取る
     const targetId = payload.companyId || payload.id || payload.companyCode || payload.code || payload.company_code;
     const companyName = payload.companyName || payload.name || payload.company_name || "";
+    // 💡 フロントエンドから送られてくるユーザーIDを受け取る
+    const adminUserId = payload.admin_user_id || payload.userId || payload.user_id || null;
 
     if (!targetId) {
       return NextResponse.json(
@@ -37,7 +38,6 @@ export async function POST(req: Request) {
       );
     }
 
-    // 💡 ステップ1：すでに同じコードが存在するかチェック（重複登録の防止）
     const { data: existingCompany, error: searchError } = await supabaseAdmin
       .from('companies')
       .select('id')
@@ -48,25 +48,25 @@ export async function POST(req: Request) {
 
     if (existingCompany) {
       return NextResponse.json(
-        { error: 'このコードはすでに他の事業所で使用されています。別のコードを入力してください。' },
-        { status: 409 } // 409 Conflict (競合エラー)
+        { error: 'このコードはすでに使用されています。' },
+        { status: 409 }
       );
     }
 
-    // 💡 ステップ2：データベースに新規登録（INSERT）を実行する
+    // 💡 データベースに新規登録（admin_user_idを含める）
     const { error: insertError } = await supabaseAdmin
       .from('companies')
       .insert([
         { 
           id: targetId, 
           name: companyName,
-          plan: 'free' // テーブル構造にplanがあるため、デフォルト値を入れる
+          plan: 'free',
+          admin_user_id: adminUserId // 追加した列に保存
         }
       ]);
 
     if (insertError) throw insertError;
 
-    // 完璧に書き込みが終わってから、初めて「成功」の合図をフロントエンドに返す
     return NextResponse.json({ success: true, message: '登録が完了しました' });
 
   } catch (error: any) {
