@@ -1,13 +1,13 @@
-// WE ARE HERO 診断データ（企業・組織マネジメント向けリファクタリング版）
+// WE ARE HERO 診断データ（障害福祉・就労支援リファクタリング版）
 export const heroData = {
   "app_config": {
     "title": {
-      "ja": "心理的資本アセスメント",
-      "en": "Psychological Capital Assessment"
+      "ja": "就労準備・心理的資本アセスメント",
+      "en": "Psychological Capital Assessment for Employment Support"
     },
     "description": {
-      "ja": "心理的資本（HERO）に基づく組織レジリエンス及びコンピテンシー診断",
-      "en": "Competency & Resilience Assessment based on Psychological Capital (HERO)"
+      "ja": "心理的資本（HERO）に基づく、就労に向けた強みと個別支援のヒントの可視化",
+      "en": "Visualizing strengths and individual support hints for employment based on Psychological Capital (HERO)"
     },
     "scale": [
       { "value": 1, "label": { "ja": "全く当てはまらない", "en": "Strongly Disagree" } },
@@ -18,214 +18,214 @@ export const heroData = {
     ]
   },
   "questions": [
-    { "id": "q01", "category": "H", "tier": 1, "is_reversed": false, "text": { "ja": "目標への道が絶たれても、即座に「プランB」の構築に取り掛かることができる。", "en": "Even if the path to my goal is cut off, I can immediately start building 'Plan B'." } },
-    { "id": "q02", "category": "H", "tier": 1, "is_reversed": true, "text": { "ja": "現在のプロジェクトにおいて、自分がどこに向かっているのか分からなくなることが多い。", "en": "In my current projects, I often lose sight of where I am heading." } },
-    { "id": "q03", "category": "H", "tier": 1, "is_reversed": false, "text": { "ja": "ゴールが遠くても、今この瞬間の泥臭い作業がそこへ繋がっていると実感できる。", "en": "Even if the goal is distant, I feel that my current gritty tasks are connected to it." } },
-    { "id": "q04", "category": "E", "tier": 1, "is_reversed": false, "text": { "ja": "未経験のタスクを任されても、「最終的には自分がなんとかする」という確信がある。", "en": "When assigned an unexperienced task, I am confident that 'I will manage it in the end'." } },
-    { "id": "q05", "category": "E", "tier": 1, "is_reversed": true, "text": { "ja": "自分の能力を超える課題に直面すると、立ちすくんでしまう。", "en": "I freeze when faced with challenges that exceed my capabilities." } },
-    { "id": "q06", "category": "E", "tier": 1, "is_reversed": false, "text": { "ja": "過去の成功体験が、今の新しい挑戦の支えになっている。", "en": "Past successful experiences support my current new challenges." } },
-    { "id": "q07", "category": "R", "tier": 1, "is_reversed": false, "text": { "ja": "理不尽なトラブルで計画が崩壊しても、翌日には平常心のルーティンに戻ることができる。", "en": "Even if unreasonable troubles destroy my plans, I can return to my normal routine the next day." } },
-    { "id": "q08", "category": "R", "tier": 1, "is_reversed": true, "text": { "ja": "一度の大きな失敗を引きずり、数日間パフォーマンスが落ちることがある。", "en": "I sometimes drag out a major failure, causing my performance to drop for days." } },
-    { "id": "q09", "category": "R", "tier": 1, "is_reversed": false, "text": { "ja": "強いストレスを感じた時、それを断ち切るための「自分なりの儀式（行動）」を持っている。", "en": "When feeling extreme stress, I have my own 'ritual' to break it off." } },
-    { "id": "q10", "category": "O", "tier": 1, "is_reversed": false, "text": { "ja": "仕事での失敗は、自分の能力不足というより「一時的な環境や運の要素」が強かったと切り替えられる。", "en": "I can shift my mindset to view work failures as 'temporary environmental or luck factors' rather than a lack of ability." } },
-    { "id": "q11", "category": "O", "tier": 1, "is_reversed": true, "text": { "ja": "ひとつのミスが、今後のキャリアすべてを台無しにするような恐怖を感じる。", "en": "I fear that a single mistake will ruin my entire career." } },
-    { "id": "q12", "category": "O", "tier": 1, "is_reversed": false, "text": { "ja": "今の苦境は長くは続かず、やがて潮目が変わると信じている。", "en": "I believe the current hardship won't last long and the tide will eventually turn." } },
-    { "id": "q13", "category": "H", "tier": 2, "is_reversed": false, "text": { "ja": "複数のアプローチを同時に走らせ、どれかが失敗してもダメージを最小限に抑える準備をしている。", "en": "I run multiple approaches simultaneously to minimize damage if one fails." } },
-    { "id": "q14", "category": "H", "tier": 2, "is_reversed": true, "text": { "ja": "ゴールまでの道筋は一つしかなく、それが塞がれたら終わりだと感じる。", "en": "I feel there is only one path to the goal, and if it's blocked, it's over." } },
-    { "id": "q15", "category": "H", "tier": 2, "is_reversed": false, "text": { "ja": "周囲が諦めるような状況でも、突破口を見つけるための議論を主導できる。", "en": "Even when others give up, I can lead discussions to find a breakthrough." } },
-    { "id": "q16", "category": "H", "tier": 2, "is_reversed": false, "text": { "ja": "目標自体が途中で変わっても、モチベーションを落とさずに再設定できる。", "en": "If the goal itself changes mid-way, I can reset without losing motivation." } },
-    { "id": "q17", "category": "E", "tier": 2, "is_reversed": false, "text": { "ja": "誰もやりたがらない地味な仕事でも、自分がやれば価値を生み出せると思う。", "en": "Even in tedious jobs no one wants, I believe I can create value." } },
-    { "id": "q18", "category": "E", "tier": 2, "is_reversed": true, "text": { "ja": "専門外の話題について意見を求められると、極度に萎縮してしまう。", "en": "I shrink back extremely when asked for opinions outside my expertise." } },
-    { "id": "q19", "category": "E", "tier": 2, "is_reversed": false, "text": { "ja": "周囲の評価がどうであれ、自分の生み出した成果物には絶対の自信を持っている。", "en": "Regardless of others' evaluations, I have absolute confidence in the output I create." } },
-    { "id": "q20", "category": "E", "tier": 2, "is_reversed": false, "text": { "ja": "失敗するかもしれない恐怖よりも、自分の仮説を証明したい欲求が勝る。", "en": "The desire to prove my hypothesis outweighs the fear of potential failure." } },
-    { "id": "q21", "category": "R", "tier": 2, "is_reversed": false, "text": { "ja": "長期にわたる単調で遅効性のタスクを、淡々と継続できる。", "en": "I can stoically continue long-term, monotonous, slow-yielding tasks." } },
-    { "id": "q22", "category": "R", "tier": 2, "is_reversed": true, "text": { "ja": "批判的なフィードバックを受けると、人格まで否定されたように感じてしまう。", "en": "I feel my entire character is denied when I receive critical feedback." } },
-    { "id": "q23", "category": "R", "tier": 2, "is_reversed": false, "text": { "ja": "納得のいかないルールや理不尽な環境下でも、感情を殺して実利を取る立ち回りができる。", "en": "Even under unacceptable rules, I can kill my emotions and maneuver for practical gains." } },
-    { "id": "q24", "category": "R", "tier": 2, "is_reversed": false, "text": { "ja": "燃え尽き症候群の兆候を自分で察知し、意図的に休むことができる。", "en": "I can detect signs of burnout myself and intentionally take a rest." } },
-    { "id": "q25", "category": "O", "tier": 2, "is_reversed": false, "text": { "ja": "自分の努力が評価されなかった時、「相手の見る目がないだけだ」と笑って流すことができる。", "en": "When my efforts go unrewarded, I can laugh it off thinking 'They just lack the eye for it'." } },
-    { "id": "q26", "category": "O", "tier": 2, "is_reversed": true, "text": { "ja": "トラブルが起きた際、解決よりも先に「誰のせいか」を気にしてしまう。", "en": "When trouble occurs, I worry about 'whose fault it is' before finding a solution." } },
-    { "id": "q27", "category": "O", "tier": 2, "is_reversed": false, "text": { "ja": "不確実な要素が多いプロジェクトほど、面白い化学反応が起きるとワクワクする。", "en": "The more uncertain a project is, the more excited I get about interesting chemical reactions." } },
-    { "id": "q28", "category": "O", "tier": 2, "is_reversed": true, "text": { "ja": "悪い予測が当たった時、「やはりダメだったか」と妙に安堵してしまう自分がいる。", "en": "When a bad prediction comes true, a part of me feels oddly relieved thinking 'I knew it wouldn't work'." } },
-    { "id": "q29", "category": "H", "tier": 3, "is_reversed": false, "text": { "ja": "巨大な目標を、今日一日の具体的なスモールタスクにまで分解する解像度を持っている。", "en": "I have the resolution to break down massive goals into concrete small tasks for today." } },
-    { "id": "q30", "category": "H", "tier": 3, "is_reversed": true, "text": { "ja": "他人の成功を見ると、自分の選んだ道が間違っているのではないかと激しく焦る。", "en": "Seeing others' success makes me severely anxious that I chose the wrong path." } },
-    { "id": "q31", "category": "H", "tier": 3, "is_reversed": false, "text": { "ja": "資源が枯渇していても、別のところから引っ張ってくる「悪知恵」が働く。", "en": "Even when resources are depleted, my 'cunning' kicks in to pull them from elsewhere." } },
-    { "id": "q32", "category": "H", "tier": 3, "is_reversed": true, "text": { "ja": "「なぜそれをやるのか」という根本的な意義を見失い、突然手が止まることがある。", "en": "I sometimes suddenly stop working, losing sight of the fundamental 'why' behind it." } },
-    { "id": "q33", "category": "H", "tier": 3, "is_reversed": false, "text": { "ja": "絶対に勝てない戦いであっても、撤退戦を指揮して被害を最小化する戦略を描ける。", "en": "Even in an unwinnable battle, I can draw a strategy to lead a retreat and minimize damage." } },
-    { "id": "q34", "category": "E", "tier": 3, "is_reversed": true, "text": { "ja": "自分の代わりはいくらでもいると、心の底で冷めている。", "en": "Deep down, I am coldly aware that I am completely replaceable." } },
-    { "id": "q35", "category": "E", "tier": 3, "is_reversed": false, "text": { "ja": "ツールや環境が劣悪でも、自分の腕前だけで一定のクオリティを叩き出せる。", "en": "Even with poor tools or environments, I can deliver a certain quality using just my skills." } },
-    { "id": "q36", "category": "E", "tier": 3, "is_reversed": true, "text": { "ja": "自分より圧倒的に優秀な人間を前にすると、戦う前から諦めてしまう。", "en": "Faced with an overwhelmingly superior person, I give up before the fight starts." } },
-    { "id": "q37", "category": "E", "tier": 3, "is_reversed": false, "text": { "ja": "権威ある人間の意見でも、論理がおかしければ臆せず反論できる。", "en": "Even against authority, I can fearlessly object if their logic is flawed." } },
-    { "id": "q38", "category": "E", "tier": 3, "is_reversed": false, "text": { "ja": "自分の価値は「何ができるか」ではなく、「何を成し遂げたか」でのみ証明されると思う。", "en": "I believe my value is proven only by 'what I have accomplished', not 'what I can do'." } },
-    { "id": "q39", "category": "R", "tier": 3, "is_reversed": false, "text": { "ja": "毎日の生活において、感情の起伏とは無関係に「絶対にやる」と決めている習慣がある。", "en": "In my daily life, I have a habit I 'absolutely do' regardless of my emotional ups and downs." } },
-    { "id": "q40", "category": "R", "tier": 3, "is_reversed": true, "text": { "ja": "予期せぬトラブルが起きた時、心臓の鼓動が早くなり、冷静な判断ができなくなる。", "en": "When unexpected trouble occurs, my heart races and I lose calm judgment." } },
-    { "id": "q41", "category": "R", "tier": 3, "is_reversed": true, "text": { "ja": "過去の失敗の記憶が突然フラッシュバックして、身動きがとれなくなることがある。", "en": "Memories of past failures sometimes suddenly flash back, paralyzing me." } },
-    { "id": "q42", "category": "R", "tier": 3, "is_reversed": false, "text": { "ja": "どん底の状態にあっても、「この状況をどうやってネタにしてやろうか」と考える自分がいる。", "en": "Even at rock bottom, a part of me thinks 'how can I turn this situation into a good story?'" } },
-    { "id": "q43", "category": "R", "tier": 3, "is_reversed": true, "text": { "ja": "他者のミスで自分のペースが乱された時、激しい怒りが湧き、平常心に戻るのに時間がかかる。", "en": "When others' mistakes disrupt my pace, intense anger wells up, taking time to calm down." } },
-    { "id": "q44", "category": "O", "tier": 3, "is_reversed": false, "text": { "ja": "チームの空気が最悪な時、あえて道化を演じてでも空気を変えようと動くことができる。", "en": "When team morale is at its worst, I can play the fool just to change the atmosphere." } },
-    { "id": "q45", "category": "O", "tier": 3, "is_reversed": true, "text": { "ja": "完璧な準備ができないなら、最初からやらない方がマシだと考える。", "en": "If I can't prepare perfectly, I'd rather not do it at all." } },
-    { "id": "q46", "category": "O", "tier": 3, "is_reversed": false, "text": { "ja": "何事も「なんとかなる」ではなく、「自分がなんとかするから大丈夫だ」という能動的な楽観を持っている。", "en": "I hold an active optimism not of 'it will work out', but 'it will be fine because I will make it work'." } },
-    { "id": "q47", "category": "O", "tier": 3, "is_reversed": true, "text": { "ja": "成功した時でさえ、「次は失敗するかもしれない」という不安が常に消えない。", "en": "Even when successful, the anxiety that 'I might fail next time' never disappears." } },
-    { "id": "q48", "category": "O", "tier": 3, "is_reversed": false, "text": { "ja": "世界や社会は基本的に不条理であり、だからこそ自分が面白いと思うことだけをやるべきだと思う。", "en": "The world is fundamentally absurd, which is exactly why I should only do what I find interesting." } }
+    { "id": "q01", "category": "H", "tier": 1, "is_reversed": false, "text": { "ja": "希望する就職先や訓練がうまくいかなくても、すぐに別の方法や次の目標（プランB）を考えることができる。", "en": "Even if my desired job or training doesn't go well, I can immediately think of another method or next goal (Plan B)." } },
+    { "id": "q02", "category": "H", "tier": 1, "is_reversed": true, "text": { "ja": "日々の通所や訓練の中で、自分が何を目指しているのか分からなくなることが多い。", "en": "During daily attendance and training, I often lose sight of what I am aiming for." } },
+    { "id": "q03", "category": "H", "tier": 1, "is_reversed": false, "text": { "ja": "就労という目標が遠く感じても、今やっている地道な作業や訓練がそこへ繋がっていると実感できる。", "en": "Even if the goal of employment feels distant, I feel that the steady tasks and training I do now are connected to it." } },
+    { "id": "q04", "category": "E", "tier": 1, "is_reversed": false, "text": { "ja": "初めて体験する作業やプログラムでも、「少しずつ練習すれば自分にもできるようになる」という確信がある。", "en": "Even with unexperienced tasks or programs, I am confident that 'I will be able to do it if I practice little by little'." } },
+    { "id": "q05", "category": "E", "tier": 1, "is_reversed": true, "text": { "ja": "今の自分には難しいと感じる作業に直面すると、パニックになったり立ちすくんだりしてしまう。", "en": "I panic or freeze when faced with tasks that I feel are currently too difficult for me." } },
+    { "id": "q06", "category": "E", "tier": 1, "is_reversed": false, "text": { "ja": "これまでに「できた」という体験が、今の新しい作業や訓練に挑戦する支えになっている。", "en": "Past experiences of 'I did it' support my current challenges in new tasks and training." } },
+    { "id": "q07", "category": "R", "tier": 1, "is_reversed": false, "text": { "ja": "予定が急に変更されたりトラブルがあっても、翌日にはいつも通りのペースで通所や作業に戻ることができる。", "en": "Even if plans suddenly change or there is trouble, I can return to my normal pace of attendance and tasks the next day." } },
+    { "id": "q08", "category": "R", "tier": 1, "is_reversed": true, "text": { "ja": "作業でのミスや対人関係の失敗を引きずり、数日間、体調や気分が落ち込むことがある。", "en": "I sometimes drag out mistakes in tasks or interpersonal failures, causing my physical condition and mood to drop for days." } },
+    { "id": "q09", "category": "R", "tier": 1, "is_reversed": false, "text": { "ja": "強いストレスや疲れを感じた時、気持ちを切り替えるための「自分なりのリラックス方法」を持っている。", "en": "When feeling extreme stress or fatigue, I have my own 'relaxation method' to switch my mood." } },
+    { "id": "q10", "category": "O", "tier": 1, "is_reversed": false, "text": { "ja": "作業での失敗は、自分を責めるのではなく「体調やタイミングが悪かっただけだ」と気持ちを切り替えられる。", "en": "I can shift my mindset to view task failures as 'just bad physical condition or timing' rather than blaming myself." } },
+    { "id": "q11", "category": "O", "tier": 1, "is_reversed": true, "text": { "ja": "ひとつのミスが、今後の「就労や自立」のすべてを台無しにしてしまうような恐怖を感じる。", "en": "I fear that a single mistake will ruin everything about my future 'employment and independence'." } },
+    { "id": "q12", "category": "O", "tier": 1, "is_reversed": false, "text": { "ja": "今のつらい状況は長くは続かず、焦らずにいればやがて良くなっていくと信じている。", "en": "I believe the current painful situation won't last long, and things will eventually get better if I don't rush." } },
+    { "id": "q13", "category": "H", "tier": 2, "is_reversed": false, "text": { "ja": "ひとつのやり方にこだわらず、うまくいかなかった時のために別のやり方も考えておくことができる。", "en": "I don't stick to one method and can think of other ways in case things don't go well." } },
+    { "id": "q14", "category": "H", "tier": 2, "is_reversed": true, "text": { "ja": "就職や自立への道は一つしかなく、それがダメになったら終わりだと感じる。", "en": "I feel there is only one path to employment and independence, and if that fails, it's over." } },
+    { "id": "q15", "category": "H", "tier": 2, "is_reversed": false, "text": { "ja": "行き詰まった時でも諦めず、解決するために支援員や周囲の人へ相談や提案ができる。", "en": "Even when stuck, I don't give up and can consult or propose to support staff and those around me to find a solution." } },
+    { "id": "q16", "category": "H", "tier": 2, "is_reversed": false, "text": { "ja": "目指す働き方や進路が途中で変わっても、やる気を落とさずに新しい目標へ向かうことができる。", "en": "Even if my desired way of working or career path changes mid-way, I can move towards a new goal without losing motivation." } },
+    { "id": "q17", "category": "E", "tier": 2, "is_reversed": false, "text": { "ja": "単調で地味な作業であっても、自分が取り組むことで事業所や誰かの役に立っていると思える。", "en": "Even in monotonous and plain tasks, I believe my efforts are helpful to the facility or someone." } },
+    { "id": "q18", "category": "E", "tier": 2, "is_reversed": true, "text": { "ja": "自分が得意ではないことについて意見を求められたり、質問されたりすると、極度に萎縮してしまう。", "en": "I shrink back extremely when asked for opinions or questions about things I am not good at." } },
+    { "id": "q19", "category": "E", "tier": 2, "is_reversed": false, "text": { "ja": "周りと比べることなく、自分が今日取り組んだ作業や成果に対して胸を張ることができる。", "en": "Without comparing myself to others, I can be proud of the tasks and results I tackled today." } },
+    { "id": "q20", "category": "E", "tier": 2, "is_reversed": false, "text": { "ja": "失敗するかもしれないという不安よりも、「まずはやってみたい・試してみたい」という気持ちが勝る。", "en": "The desire to 'first try and test it' outweighs the anxiety of potential failure." } },
+    { "id": "q21", "category": "R", "tier": 2, "is_reversed": false, "text": { "ja": "結果がすぐに出ないような単調な訓練や作業であっても、毎日コツコツと続けることができる。", "en": "I can steadily continue every day, even in monotonous training and tasks where results are not immediate." } },
+    { "id": "q22", "category": "R", "tier": 2, "is_reversed": true, "text": { "ja": "支援員からの注意やアドバイスを受けると、自分のすべてを否定されたように感じてしまう。", "en": "I feel my entire self is denied when I receive cautions or advice from support staff." } },
+    { "id": "q23", "category": "R", "tier": 2, "is_reversed": false, "text": { "ja": "自分の思い通りにならないルールや状況でも、感情をコントロールして今できることに集中できる。", "en": "Even under rules or situations that don't go my way, I can control my emotions and focus on what I can do now." } },
+    { "id": "q24", "category": "R", "tier": 2, "is_reversed": false, "text": { "ja": "自分の疲れや気分の落ち込みのサインに気づき、無理をする前に自分から休むことができる。", "en": "I can notice signs of my own fatigue or low mood and intentionally take a rest before overdoing it." } },
+    { "id": "q25", "category": "O", "tier": 2, "is_reversed": false, "text": { "ja": "自分の頑張りがすぐに評価されなくても、「今はタイミングじゃないだけだ」と割り切ることができる。", "en": "Even if my efforts are not immediately recognized, I can accept it thinking 'it's just not the right timing now'." } },
+    { "id": "q26", "category": "O", "tier": 2, "is_reversed": true, "text": { "ja": "トラブルやミスが起きた際、どう解決するかよりも「誰のせいか（自分のせいか）」を気にしてしまう。", "en": "When trouble or mistakes occur, I worry about 'whose fault it is (is it mine?)' before how to solve it." } },
+    { "id": "q27", "category": "O", "tier": 2, "is_reversed": false, "text": { "ja": "初めて会う人や新しいプログラムなど、どうなるか分からない状況でも「何か良いことがあるかも」と前向きに捉えられる。", "en": "Even in uncertain situations like meeting new people or starting new programs, I can positively think 'something good might happen'." } },
+    { "id": "q28", "category": "O", "tier": 2, "is_reversed": true, "text": { "ja": "何かがうまくいかなかった時、「やっぱり自分には無理だったんだ」と妙に納得してしまう自分がいる。", "en": "When something goes wrong, a part of me feels oddly convinced thinking 'I knew it was impossible for me'." } },
+    { "id": "q29", "category": "H", "tier": 3, "is_reversed": false, "text": { "ja": "「就職」という大きな目標のために、今日一日何を頑張ればいいのか、小さな目標に分けて考えることができる。", "en": "For the big goal of 'employment', I can break down what I should work hard on today into small goals." } },
+    { "id": "q30", "category": "H", "tier": 3, "is_reversed": true, "text": { "ja": "他の利用者が就職したり褒められたりするのを見ると、「自分はダメなのではないか」と激しく焦ってしまう。", "en": "Seeing other users get jobs or be praised makes me severely anxious that 'I might be a failure'." } },
+    { "id": "q31", "category": "H", "tier": 3, "is_reversed": false, "text": { "ja": "自分一人で解決する手段がない時でも、支援員や家族、外部の窓口などを頼って解決の糸口を見つけることができる。", "en": "Even when I have no means to solve things alone, I can rely on support staff, family, or external counters to find a clue to the solution." } },
+    { "id": "q32", "category": "H", "tier": 3, "is_reversed": true, "text": { "ja": "「これをやって何の意味があるのか」と目的を見失い、突然作業や訓練への意欲がなくなることがある。", "en": "I sometimes suddenly lose motivation for tasks or training, losing sight of the purpose 'what's the point of doing this?'" } },
+    { "id": "q33", "category": "H", "tier": 3, "is_reversed": false, "text": { "ja": "どうしてもクリアできない苦手な課題があっても、パニックにならずに「一旦休む」「人に任せる」という選択ができる。", "en": "Even with difficult tasks I just can't clear, I don't panic and can choose to 'take a break' or 'leave it to others'." } },
+    { "id": "q34", "category": "E", "tier": 3, "is_reversed": true, "text": { "ja": "この事業所の中で、自分は特に必要とされていない存在だと心の底で感じている。", "en": "Deep down, I feel that I am not a particularly needed existence in this facility." } },
+    { "id": "q35", "category": "E", "tier": 3, "is_reversed": false, "text": { "ja": "体調や周りの状況が万全ではなくても、自分なりに工夫して任された作業をやり遂げることができる。", "en": "Even if my physical condition or surroundings are not perfect, I can manage to complete assigned tasks in my own way." } },
+    { "id": "q36", "category": "E", "tier": 3, "is_reversed": true, "text": { "ja": "作業が早い人やコミュニケーションが得意な人を見ると、「自分には到底無理だ」と最初から諦めてしまう。", "en": "When I see people who are fast at tasks or good at communication, I give up from the start thinking 'it's absolutely impossible for me'." } },
+    { "id": "q37", "category": "E", "tier": 3, "is_reversed": false, "text": { "ja": "支援員や目上の人の意見であっても、自分が違うと思えば「私はこう思います」と伝えることができる。", "en": "Even against the opinions of support staff or superiors, I can say 'I think this way' if I disagree." } },
+    { "id": "q38", "category": "E", "tier": 3, "is_reversed": false, "text": { "ja": "自分の価値は「障害や苦手なことがあるか」ではなく、「今日どれだけ頑張ったか」で決まると思う。", "en": "I believe my value is determined not by 'whether I have disabilities or weaknesses', but by 'how hard I tried today'." } },
+    { "id": "q39", "category": "R", "tier": 3, "is_reversed": false, "text": { "ja": "毎日の生活で、気分が良い日も悪い日も「これだけは必ずやる」と決めている習慣（ルーティン）がある。", "en": "In my daily life, I have a habit (routine) I 'absolutely do' on both good and bad days." } },
+    { "id": "q40", "category": "R", "tier": 3, "is_reversed": true, "text": { "ja": "予想外の出来事（予定変更など）が起きた時、ドキドキしてパニックになり、どうしていいか分からなくなる。", "en": "When unexpected events (like schedule changes) occur, my heart races, I panic, and I don't know what to do." } },
+    { "id": "q41", "category": "R", "tier": 3, "is_reversed": true, "text": { "ja": "過去の嫌な記憶や失敗を突然思い出してしまい、動けなくなったり気分が悪くなったりすることがある。", "en": "I sometimes suddenly remember past bad memories or failures, which paralyzes me or makes me feel sick." } },
+    { "id": "q42", "category": "R", "tier": 3, "is_reversed": false, "text": { "ja": "すごく落ち込むようなことがあっても、「これも後で笑い話や良い経験になるかもしれない」と考える自分がいる。", "en": "Even when I feel extremely down, a part of me thinks 'this might turn out to be a good story or experience later'." } },
+    { "id": "q43", "category": "R", "tier": 3, "is_reversed": true, "text": { "ja": "他の人のせいで自分のペースが乱された時、激しい怒りやイライラが湧き、落ち着くまでに時間がかかる。", "en": "When others disrupt my pace, intense anger or frustration wells up, and it takes time to calm down." } },
+    { "id": "q44", "category": "O", "tier": 3, "is_reversed": false, "text": { "ja": "事業所やグループの空気が暗い時、自分から明るい挨拶をしたり話題を振ったりして、空気を和らげようとすることができる。", "en": "When the atmosphere in the facility or group is dark, I can try to soften it by cheerfully greeting or starting a topic." } },
+    { "id": "q45", "category": "O", "tier": 3, "is_reversed": true, "text": { "ja": "絶対に失敗しないと確信できないなら、最初から新しい作業やプログラムには参加しない方がマシだと考える。", "en": "If I can't be sure I won't fail, I think it's better not to participate in new tasks or programs from the start." } },
+    { "id": "q46", "category": "O", "tier": 3, "is_reversed": false, "text": { "ja": "何事も「誰かがやってくれる」ではなく、「自分なりに少しずつやっていけば大丈夫だ」という前向きな気持ちを持っている。", "en": "I have a positive mindset that it's not 'someone else will do it', but 'it will be fine if I do it little by little in my own way'." } },
+    { "id": "q47", "category": "O", "tier": 3, "is_reversed": true, "text": { "ja": "うまくいった時や褒められた時でさえ、「次は失敗するかもしれない」という不安が常に消えない。", "en": "Even when things go well or I am praised, the anxiety that 'I might fail next time' never disappears." } },
+    { "id": "q48", "category": "O", "tier": 3, "is_reversed": false, "text": { "ja": "世の中には思い通りにならないことも多いからこそ、自分が「楽しい」「やりたい」と思えることを大切にしたい。", "en": "Because there are many things in the world that don't go as planned, I want to cherish what I find 'fun' and 'want to do'." } }
   ],
   "types": {
     "HHHH": {
-      "title": { "ja": "自律型ハイパフォーマー", "en": "Autonomous High-Performer" },
-      "profile": { "ja": "すべての心理的資本が極めて高い水準にあります。外部環境の変化や不確実なノイズに一切動じることなく、自らマイルストーンを設定し、ストイックに目標を完遂する能力を有します。組織における強力な推進力となる一方、自己基準が高すぎるために他者の課題への共感やフォローが不足するリスクを内包しています。", "en": "All parameters maxed out. You are a self-driven engine who completes goals without being shaken by external noise. While a core driver, ensure you don't alienate others with your high standard." },
-      "action_plan": { "ja": "現在の高度なセルフマネジメント習慣を維持してください。ただしチーム運営においては、自身の基準をメンバーに強制せず、個々の心理的資本を育てるメンターとしてのアプローチを意識すると組織全体の成果に繋がります。", "en": "Maintain your habits, but focus on nurturing others instead of imposing your standards." },
+      "title": { "ja": "自律型セルフマネジメント", "en": "Autonomous Self-Manager" },
+      "profile": { "ja": "すべての心理的資本が高い水準にあります。環境の変化やノイズに動じることなく、自ら目標を設定し、就労に向けて安定した努力を継続できる能力を持っています。支援員に頼らずとも道を切り拓く推進力がある一方、自分に対する基準が高すぎるために、無意識に無理を重ねてしまうリスクがあります。", "en": "All parameters maxed out. You possess the ability to self-manage towards employment. Ensure you don't overexert yourself subconsciously." },
+      "action_plan": { "ja": "現在の良好なセルフコントロールを維持してください。ただし、調子が良い時ほど「自分一人で抱え込みすぎない」ことを意識し、定期的に支援員へ状況を報告・共有する時間を設けるとより安定します。", "en": "Maintain your habits, but intentionally share your progress with support staff to avoid taking on too much alone." },
       "affinity": {
         "best_partner": "LLLL",
-        "partner_title": { "ja": "リスク検知型リスクアナリスト", "en": "Risk-Detecting Analyst" },
-        "reason": { "ja": "あなたが前進を最優先する影で、彼らがプロジェクトに潜む致命的な盲点や法的・運用的リスクを緻密に検知します。死角を完璧に補完し合える最強の設計・実行ペアとなります。", "en": "They detect critical blind spots while you charge forward, establishing a perfect risk-mitigation partnership." }
+        "partner_title": { "ja": "危機察知型アナリスト", "en": "Risk-Detecting Analyst" },
+        "reason": { "ja": "あなたが前進を最優先にする中で見落としがちな「体調の変化」や「小さなリスク」を、彼らが繊細に察知し、ペース配分を見直すきっかけを与えてくれます。", "en": "They sensitively detect physical changes and risks you might overlook while charging forward." }
       }
     },
     "HHHL": {
-      "title": { "ja": "リスク管理型ストラテジスト", "en": "Risk-Management Strategist" },
-      "profile": { "ja": "優れた実行力と高い目標を持ちながら、常に『最悪のシナリオ』を想定して動く冷徹な論理思考の持ち主です。無根拠な楽観を徹底的に排除するため、構築する計画や戦略には一切の隙がありません。しかし、その慎重さと厳格さゆえに、チームに過度な緊張感や心理的プレッシャーを与える傾向があります。", "en": "High capability combined with defensive realism. You create flawless plans by assuming the worst, but may accidentally pressure team morale." },
-      "action_plan": { "ja": "完璧主義は大きな武器ですが、時にメンバーの挑戦意欲を削ぐ要因となります。意図的に要件定義やスケジュールに『バッファ（遊びの要素）』を持たせるシステム設計を意識してください。", "en": "Incorporate intentional cushions into your projects to ensure your team's psychological safety." },
+      "title": { "ja": "慎重型ステップアッパー", "en": "Cautious Step-Upper" },
+      "profile": { "ja": "高い目標と行動力を持ちながら、常に「うまくいかなかった時のこと」を想定して動く慎重な思考の持ち主です。楽観視をしないため、計画通りに物事を進める確実性があります。しかし、その真面目さと厳格さゆえに、自分自身に過度なプレッシャーをかけてしまう傾向があります。", "en": "High capability combined with cautious realism. You proceed steadily but may accidentally pressure yourself too much." },
+      "action_plan": { "ja": "完璧を目指す姿勢は強みですが、時には「まあ、いっか」「今日はここまで」と区切りをつける練習が必要です。支援員と一緒に「合格ライン」を少し低く設定してみましょう。", "en": "Practice setting slightly lower 'pass lines' with your support staff to ease self-pressure." },
       "affinity": {
         "best_partner": "LLLH",
-        "partner_title": { "ja": "組織心理安全性ビルダー", "en": "Psychological Safety Builder" },
-        "reason": { "ja": "あなたの厳格な管理体制と張り詰めた論理的緊張感を、彼らの柔軟で前向きな姿勢が自然と緩和します。組織の早期離職や機能不全を防ぎ、持続可能なチームへと変貌させます。", "en": "Their flexible, positive attitude neutralizes your rigid tension, preserving long-term team sustainability." }
+        "partner_title": { "ja": "心理的安全のオアシス", "en": "Psychological Safety Oasis" },
+        "reason": { "ja": "あなたの張り詰めた緊張感を、彼らの柔軟で前向きな姿勢が自然と和らげてくれます。一緒に作業することで、肩の力を抜いて取り組むことができます。", "en": "Their flexible, positive attitude naturally relieves your strict tension." }
       }
     },
     "HHLH": {
-      "title": { "ja": "先行突破型エースプレイヤー", "en": "Front-Line Ace Player" },
-      "profile": { "ja": "高いモチベーションと自己効力感に溢れ、組織の目標に向かって鮮やかに成果を叩き出す切り込み隊長です。順風満帆な状況下で最も輝きますが、予期せぬ大きな挫折や理不尽な環境変化に対する耐性（Resilience）が低いため、一度歯車が狂うと大幅にパフォーマンスを低下させる脆さを秘めています。", "en": "Brimming with target drive and energy. You excel in stable or growth phases, but are highly vulnerable to sudden, chaotic market setbacks." },
-      "action_plan": { "ja": "メンタルの破綻を防ぐため、挑戦の初期段階で客観的な『撤退基準（損切りライン）』をルール化してください。精神力で耐えようとするのではなく、失敗時のリカバリー手順をマニュアル化することが安定に繋がります。", "en": "Establish objective retreat criteria beforehand. Rely on structured recovery processes rather than raw willpower." },
+      "title": { "ja": "積極型フロントランナー", "en": "Active Front-Runner" },
+      "profile": { "ja": "高いモチベーションと自信に溢れ、新しいプログラムや作業にも前向きに挑戦できるタイプです。順調な時は事業所全体を引っ張るような明るさを見せますが、予期せぬ失敗や環境の大きな変化に対する耐性が低く、一度つまずくと極端に落ち込んでしまう脆さを秘めています。", "en": "Brimming with drive. You excel when things go well, but are vulnerable to sudden setbacks." },
+      "action_plan": { "ja": "気分の波をコントロールするため、調子が良い時こそ「もし疲れたらどうするか」「失敗したら誰に相談するか」というSOSの出し方を、事前に支援員と決めておくことが重要です。", "en": "Establish a concrete SOS plan with support staff for when you feel tired or face failure." },
       "affinity": {
         "best_partner": "LLHL",
-        "partner_title": { "ja": "高耐久型バックオフィサー", "en": "Highly Durable Controller" },
-        "reason": { "ja": "あなたが不測の事態で一時的に機能停止に陥った際、彼らが無感情に、かつ確実にフロントラインを守秘・維持します。あなたが再起して戦線復帰するための時間を稼ぐ盾となります。", "en": "When you fracture, their stoic defense holds the fort, giving you the necessary window to mentally reset." }
+        "partner_title": { "ja": "高耐久型バックアップ", "en": "Highly Durable Backup" },
+        "reason": { "ja": "あなたが予期せぬ事態で落ち込んだ際、彼らが感情の起伏なく安定して作業を続ける姿を見ることで、冷静さを取り戻すことができます。", "en": "When you fracture, their stoic stability helps you regain your calmness." }
       }
     },
     "HHLL": {
-      "title": { "ja": "論理構築型システムアーキテクト", "en": "Logical System Architect" },
-      "profile": { "ja": "高い専門能力をベースに完璧な要件定義やシステム設計を行う天才肌ですが、現場の泥臭い仕様変更や想定外の突発アクシデントに対する復帰力・楽観性を欠いています。ドキュメントや計算通りに進行するクローズドな環境において、他の追随を許さない圧倒的なバリューを発揮します。", "en": "A blueprint genius who designs flawless workflows, yet easily destabilized by unstructured real-world errors and chaos." },
-      "action_plan": { "ja": "「設計崩壊＝ゲームオーバー」という二元論的な思考を修正しましょう。エラーハンドリングと同様に、最初から『計画は現場で2割崩れるもの』と要件に論理的に組み込むことで、視野が広がります。", "en": "Treat real-world planning errors as expected runtime anomalies; dynamically build slack into requirements." },
+      "title": { "ja": "理論構築型プランナー", "en": "Logical Planner" },
+      "profile": { "ja": "自分の得意なことやルーティンワークにおいては、完璧に作業をこなす能力を持っています。一方で、予定外の変更や、想定と違うことが起きた時の復帰力や楽観性に欠けており、パニックになりやすい傾向があります。自分のペースが守られる環境で最大の力を発揮します。", "en": "Excellent in routines and logical tasks, but easily destabilized by unexpected changes." },
+      "action_plan": { "ja": "「予定通りにいかないこと」をあらかじめ予定に組み込む練習をしましょう。支援員と相談し、スケジュールに「予備の時間（バッファ）」を持たせることで、心の余裕が生まれます。", "en": "Build 'buffer time' into your schedule with support staff to handle unexpected changes." },
       "affinity": {
         "best_partner": "LLHH",
         "partner_title": { "ja": "現場適応型サバイバー", "en": "Field Adaptation Survivor" },
-        "reason": { "ja": "あなたの精緻な設計図が予測不可能な現場のトラブルで頓挫した時、泥臭いアドホックな対応でシステムを強引に軌道修正してくれる最強の実働部隊として機能します。", "en": "When theoretical plans fail on the ground, their grit and practical adaptation realign the project to success." }
+        "reason": { "ja": "あなたの計画が予想外のトラブルで崩れた時、彼らの「なんとかなるさ」という柔軟な対応力が、パニックを鎮める大きな助けになります。", "en": "When plans fail, their flexible adaptation greatly helps calm your panic." }
       }
     },
     "HLHH": {
-      "title": { "ja": "不屈のフォロワーシップリーダー", "en": "Resilient Followership Leader" },
-      "profile": { "ja": "自己評価や個人の能力に対する自信は控えめですが、何度打撃を受けても即座に立ち上がり、常に前を向き続ける圧倒的な復帰力と能動的楽観性を備えています。その泥臭くひたむきな姿勢は、周囲のメンバーのモチベーションを高め、結果的に組織から最も支援される結節点となります。", "en": "Modest self-assessment but paired with endless resilience. Your persistence wins the deep trust and support of your peers." },
-      "action_plan": { "ja": "自信の低さを過度に気にする必要はありません。あなたの最大のコンピテンシーは『打たれ強さと粘り強さ』です。そのまま打席に立ち続け、行動量で周囲の基準を引き上げてください。", "en": "Do not fear low self-confidence. Your durability is your ultimate weapon; maintain your high frequency of action." },
+      "title": { "ja": "不屈のムードメーカー", "en": "Resilient Mood Maker" },
+      "profile": { "ja": "自分自身の能力に対する自信は控えめですが、何度失敗しても立ち上がり、常に前を向こうとする圧倒的な立ち直りの早さと前向きさを備えています。そのひたむきな姿勢は、他の利用者や支援員に勇気を与え、事業所の雰囲気を明るくする力を持っています。", "en": "Modest self-assessment paired with endless resilience. Your persistence encourages everyone around you." },
+      "action_plan": { "ja": "自信がないことを気にする必要はありません。あなたの最大の魅力は「転んでも起き上がる力」です。そのままの姿勢で、焦らずに少しずつ自分のできることを増やしていきましょう。", "en": "Do not fear low self-confidence. Your ability to get back up is your greatest charm." },
       "affinity": {
         "best_partner": "LHLL",
-        "partner_title": { "ja": "単独型テクニカルスペシャリスト", "en": "Isolated Technical Specialist" },
-        "reason": { "ja": "あなたが泥臭く矢面に立ち、交渉や折衝のヘイトを引き受けている間に、彼らが高度な技術力をもってピンポイントで致命的な課題を解決してくれます。", "en": "While you clear interpersonal friction and blockages, they apply deep technical solutions to resolve critical blocks." }
+        "partner_title": { "ja": "単独集中型スペシャリスト", "en": "Solo-Focused Specialist" },
+        "reason": { "ja": "あなたが人間関係や雰囲気作りに貢献している裏で、彼らが特定の専門的な作業を黙々とこなし、お互いの苦手な部分を補い合うことができます。", "en": "While you build a positive atmosphere, they silently handle specialized tasks." }
       }
     },
     "HLHL": {
-      "title": { "ja": "寡黙な職人肌スペシャリスト", "en": "Stoic Craft Specialist" },
-      "profile": { "ja": "自己顕示欲や無根拠なポジティブさは皆無です。しかし「目標への執念」と「静かなる再起力」だけでタスクを地道に処理し続ける修羅の一面を持ちます。不条理な環境や苦痛を糧に変え、エンジニアリングや研究開発など、孤独な深掘りが必要な領域で無類の強さを誇ります。", "en": "Fueled by sheer persistence and resilient focus rather than charisma. Exceptionally strong in research or deep programming." },
-      "action_plan": { "ja": "自己を追い込みすぎる傾向があり、限界値を突破した際に突然燃え尽きるリスクがあります。自身の感覚ではなく、稼働時間やタスク完了率などの客観的なデータに基づいて強制休養を挟んでください。", "en": "Prone to sudden burnout due to excessive internal pressure. Use quantitative hard limits to mandate rest cycles." },
+      "title": { "ja": "寡黙な職人肌ワーカー", "en": "Stoic Craft Worker" },
+      "profile": { "ja": "目立つことやポジティブさをアピールすることはありませんが、「目標への執念」と「静かなる忍耐力」で、与えられた作業をコツコツと正確に処理し続ける強みがあります。一人で没頭できる作業や、単調なルーティンワークにおいて無類の強さを発揮します。", "en": "Fueled by sheer persistence rather than outward positivity. Exceptionally strong in solo, steady tasks." },
+      "action_plan": { "ja": "自分を限界まで追い込んでしまう傾向があります。疲れを感じにくいため、時間やアラームで区切りをつけ、強制的に休憩を取るルールを設けることが長く働き続けるコツです。", "en": "Prone to pushing limits silently. Set rules to take forced breaks based on time or alarms." },
       "affinity": {
         "best_partner": "LHLH",
-        "partner_title": { "ja": "変革型イノベーションアドバイザー", "en": "Agile Innovation Advisor" },
-        "reason": { "ja": "あなたの重苦しくなりがちな執念に、彼らが軽快なフットワークと新規のトレンド視点をもたらし、停滞していた業務に思いもよらぬブレイクスルー（近道）を発生させます。", "en": "They inject agility and lateral market insights into your deep focus, engineering unexpected shortcuts." }
+        "partner_title": { "ja": "状況適応型チャレンジャー", "en": "Adaptive Challenger" },
+        "reason": { "ja": "あなたが一人で煮詰まりそうになった時、彼らが軽いフットワークで新しい話題ややり方を持ち込み、良い気分転換を与えてくれます。", "en": "They inject agility and new perspectives when you are about to get stuck in deep focus." }
       }
     },
     "HLLH": {
-      "title": { "ja": "未来開拓型イノベーター", "en": "Visionary Concept Innovator" },
-      "profile": { "ja": "実務的な耐久力や詳細な計算力は発展途上ですが、常に市場の明るい未来の可能性を信じ、常識に囚われないプロダクトコンセプトや事業アイデアを量産する企画タイプです。組織の閉塞感を打破する『発射台』として機能します。", "en": "High conceptual vision and optimism, but loose on operational endurance. Act as a catalyst for organizational breakthroughs." },
-      "action_plan": { "ja": "アイデアの提示だけで自己満足して終わらせない仕組みが必要です。あなたの抽象的な構想を具現化し、実業務に落とし込んでくれる『緻密な実行役』と強固なペアリングを組んでください。", "en": "Ideas alone hold no commercial value. Ensure you secure an operational executor to ground your high-level plans." },
+      "title": { "ja": "前向きなアイデアマン", "en": "Positive Idea Generator" },
+      "profile": { "ja": "忍耐力や細かい作業への自信はこれから伸ばしていく段階ですが、常に将来への明るい希望を持ち、「こんな仕事をしてみたい」「こんな工夫をしたら面白い」とアイデアを膨らませる力があります。マンネリ化しやすい訓練に新しい視点をもたらす存在です。", "en": "High conceptual vision and optimism, but currently building operational endurance. Brings new perspectives." },
+      "action_plan": { "ja": "思いついたアイデアを行動に移すためのサポートが必要です。支援員と一緒に、そのアイデアを「今日できる小さな作業」に落とし込む練習を繰り返してください。", "en": "Work with support staff to break down your ideas into small, actionable daily tasks." },
       "affinity": {
         "best_partner": "LHHL",
-        "partner_title": { "ja": "実務特化型エグゼキューター", "en": "Objective Task Executor" },
-        "reason": { "ja": "あなたの突飛で抽象的なビジネス構想を、彼らが一切の感情やバイアスを交えずに、極めて正確なコード、ドキュメント、業務フローへと落とし込みます。", "en": "They masterfully operationalize your raw abstract visions into strict, flawless functional assets." }
+        "partner_title": { "ja": "実務特化型サポーター", "en": "Practical Task Supporter" },
+        "reason": { "ja": "あなたの豊かな発想を、彼らが一切の感情を交えずに正確な作業手順や形にしてくれるため、最高の協力関係が築けます。", "en": "They masterfully turn your ideas into exact procedures and forms." }
       }
     },
     "HLLL": {
-      "title": { "ja": "思慮深い長期的ビジャナリー", "en": "Prudent Long-Term Visionary" },
-      "profile": { "ja": "目指すべき高い長期ビジョンを内包しながらも、現状への自己不信と不安から、意思決定に遅れが生じやすい苦悩型のプランナーです。しかし、リスクに対して誰よりも真摯に向き合うため、その歩みは遅くとも確実に組織を正しい方向へ導く性質を持っています。", "en": "Possesses sharp target vision but hindered by heavy analytical anxiety. Your slow trajectory is highly deliberate and safe." },
-      "action_plan": { "ja": "ビジョンの心理的ハードルを意図的に下げましょう。壮大な目標に萎縮する前に、本日中に完結できる最小単位のプロトタイプ構築（PoC）に強制的に手を付けるルールを運用してください。", "en": "Deconstruct your grand roadmap into immediate, low-stakes micro-tasks to bypass paralysis by analysis." },
+      "title": { "ja": "思慮深い慎重派", "en": "Prudent Planner" },
+      "profile": { "ja": "就労への目標は持っているものの、失敗への不安や自己評価の低さから、新しい一歩を踏み出すのに時間がかかるタイプです。しかし、リスクに対して誰よりも真剣に向き合うため、一度決めたことは着実に進めることができる誠実さを持っています。", "en": "Possesses a goal but hindered by anxiety. Your careful steps lead to safe and steady progress." },
+      "action_plan": { "ja": "大きな目標を見ると不安になってしまうため、「今日1時間だけ頑張る」「この作業だけ終わらせる」といった、絶対に失敗しない小さな目標（スモールステップ）を積み重ねることに集中してください。", "en": "Focus entirely on tiny, fail-proof goals (small steps) to bypass anxiety." },
       "affinity": {
         "best_partner": "LHHH",
-        "partner_title": { "ja": "超短期集中型タスクバスター", "en": "High-Velocity Task Buster" },
-        "reason": { "ja": "あなたがリスクを恐れて意思決定を躊躇している目の前の障壁を、彼らが持ち前の機動力とタフネスによってノータイムで物理的に突破・排除してくれます。", "en": "They physically clear immediate blockages without overthinking, complementing your cautious strategy." }
+        "partner_title": { "ja": "現場集中型プレイヤー", "en": "Task-Focused Player" },
+        "reason": { "ja": "あなたが不安で立ち止まっている時、彼らが目の前の作業を勢いよく片付けていく姿を見ることで、「自分も少しやってみよう」と背中を押してもらえます。", "en": "Their high-velocity action encourages you to take your own small steps forward." }
       }
     },
     "LHHH": {
-      "title": { "ja": "機動型プロダクトエグゼキューター", "en": "High-Velocity Task Buster" },
-      "profile": { "ja": "抽象的な中長期戦略や大義名分を考えるのは苦手ですが、圧倒的な自己効力感とタフネスにより、割り当てられた目の前の業務や技術的バグを高速で粉砕し続ける現場最強のエンジンです。不確実性の高いスタートアップ環境や修羅場で無類の強さを発揮します。", "en": "Lacks vertical vision but operates at maximum velocity and confidence on explicit tasks. A powerful operational engine." },
-      "action_plan": { "ja": "「どこに向かって開発・運用すべきか」の方向付けは完全に割り切り、信頼できる他者に委ねてください。あなたは要件定義されたバックログを最速・最高品質で消化することにステータスを全振りして構いません。", "en": "Outsource macro strategic alignment to peers, and double down on processing actionable task backlogs." },
+      "title": { "ja": "現場集中型プレイヤー", "en": "Task-Focused Player" },
+      "profile": { "ja": "長期的な進路や難しい理屈を考えるのは苦手ですが、「目の前の作業をこなす」ことにかけては圧倒的な自信とタフネスを持っています。割り当てられた仕事に対して疑問を持たず、ハイペースで処理し続けることができる実務の要です。", "en": "Lacks long-term vision but operates at maximum velocity on explicit daily tasks." },
+      "action_plan": { "ja": "「将来どうなりたいか」で悩む必要はありません。まずは目の前の作業を高いクオリティでこなし続けることで、支援員から適切な就職先の提案が自然と引き寄せられます。", "en": "Don't worry about the distant future. Focus on completing daily tasks with high quality." },
       "affinity": {
         "best_partner": "HLLL",
-        "partner_title": { "ja": "思慮深い長期的ビジャナリー", "en": "Prudent Long-Term Visionary" },
-        "reason": { "ja": "推進方向を見失いがちなあなたに対し、彼らが苦悩と精緻な分析の果てに導き出した「絶対に踏み外さない技術的・経営的羅針盤」を提示してくれます。", "en": "They supply the highly calibrated navigation matrix you lack, providing clear intent for your momentum." }
+        "partner_title": { "ja": "思慮深い慎重派", "en": "Prudent Planner" },
+        "reason": { "ja": "勢いで突っ走りがちなあなたに対し、彼らの慎重な視点が「ちょっと待って、確認しよう」という安全装置の役割を果たしてくれます。", "en": "Their cautious perspective acts as a safety mechanism for your high-speed momentum." }
       }
     },
     "LHHL": {
-      "title": { "ja": "実務特化型エグゼキューター", "en": "Objective Task Executor" },
-      "profile": { "ja": "過度な情熱や無根拠なビジョンには依存しません。与えられたミッション、要件定義書、開発仕様書を完璧かつ精緻に遂行することに無上のプロ意識を持つ職人です。感情の起伏に左右されずコードやクオリティを維持できる、組織の絶対的な安定軸です。", "en": "Detached from emotional highs or abstract hype; motivated purely by operational mechanics and flawless output." },
-      "action_plan": { "ja": "無理に熱いモチベーションを自己捏造する必要はありません。「成果物の品質そのものが自己のプロフェッショナリズムの証明である」という独自の美学に立脚し、設計やコードをどこまでも洗練させてください。", "en": "Do not force emotional buy-in. Rely on your internal benchmark of professional technical excellence." },
+      "title": { "ja": "実務特化型サポーター", "en": "Practical Task Supporter" },
+      "profile": { "ja": "感情の起伏や無駄なポジティブさに流されず、与えられたマニュアルや作業手順を完璧に守って遂行するプロ意識の高い職人です。気分によって作業の質が変わらないため、事業所にとって最も安定して仕事を任せられる存在です。", "en": "Motivated purely by operational mechanics. You execute tasks strictly according to the manual." },
+      "action_plan": { "ja": "無理に周りのテンションに合わせたり、熱い目標を掲げたりする必要はありません。「決められた作業を今日も正確に終わらせた」という実績そのものを、自分の最大の評価として誇ってください。", "en": "Do not force emotional motivation. Be proud of the fact that you accurately completed the assigned tasks today." },
       "affinity": {
         "best_partner": "HLLH",
-        "partner_title": { "ja": "未来開拓型イノベーター", "en": "Visionary Concept Innovator" },
-        "reason": { "ja": "あなたに欠けている「突飛だが市場を揺るがす熱量あるビジョン」を彼らが惜しみなく供給し、あなたの精密な技術力・実務能力に最大の存在意義と爆発的な価値を与えます。", "en": "They feed the market intuition you lack, generating structural opportunities to deploy your precise skill set." }
+        "partner_title": { "ja": "前向きなアイデアマン", "en": "Positive Idea Generator" },
+        "reason": { "ja": "あなたに欠けている「新しい視点や楽しむ心」を彼らが提供し、単調な作業の中に新鮮な意味を見出す手助けをしてくれます。", "en": "They provide the 'new perspectives and fun' that add fresh meaning to your stable routines." }
       }
     },
     "LHLH": {
-      "title": { "ja": "変革型イノベーションアドバイザー", "en": "Agile Innovation Advisor" },
-      "profile": { "ja": "重厚な粘り強さや長期の目標管理は苦手ですが、自分のスキルに対する確かな自信と、圧倒的な状況適応力・ノリの良さだけで予期せぬピンチを臨機応変に切り抜けるアドホック開発の天才肌です。プロトタイピングの初期フェーズにおいて圧倒的な価値を生み出します。", "en": "Sprints on confidence and contextual adaptation rather than endurance. Masterful at rapid, loose prototyping." },
-      "action_plan": { "ja": "泥沼の長期戦や保守運用フェーズはあなたのパフォーマンスを低下させます。短期決戦型の新規立ち上げや、即効性のある概念実証（PoC）の高速開発、一撃離脱が可能な役割に特化してください。", "en": "Avoid multi-year maintenance cycles. Focus entirely on early-stage deployment, POC validation, and fast delivery." },
+      "title": { "ja": "状況適応型チャレンジャー", "en": "Adaptive Challenger" },
+      "profile": { "ja": "一つの作業をコツコツ長く続ける忍耐力は弱いですが、自分の直感への自信と、新しい環境にすぐ馴染む適応力の高さを持っています。予定外の出来事や、初めての作業に対しても物怖じせず、軽やかに挑戦できるフットワークの軽さが魅力です。", "en": "Masterful at rapid adaptation and trying new things, though lacking in long endurance." },
+      "action_plan": { "ja": "飽きっぽさが課題になることがあります。長期間同じ作業をするよりも、支援員と相談して「短期間で完了する作業を複数組み合わせる」など、変化のあるスケジュールを組むと能力が活かせます。", "en": "Avoid long-term monotonous tasks. Work with staff to create a schedule with varied, short-term assignments." },
       "affinity": {
         "best_partner": "HLHL",
-        "partner_title": { "ja": "寡黙な職人肌スペシャリスト", "en": "Stoic Craft Specialist" },
-        "reason": { "ja": "あなたがアイデアを形にして初期検証を終え、飽きて手放しそうになったシステムやプロジェクトを、彼らが執念をもって泥臭く保守・リファクタリングし、商用レベルへ完遂してくれます。", "en": "They absorb your high-turnover prototypes and stoically refactor them into high-availability production code." }
+        "partner_title": { "ja": "寡黙な職人肌ワーカー", "en": "Stoic Craft Worker" },
+        "reason": { "ja": "あなたが新しい作業を形にして飽き始めた頃、彼らがそれを引き継いでコツコツと最後まで仕上げてくれる、最高の連携が生まれます。", "en": "They patiently complete the tasks you initiated once you start looking for the next new thing." }
       }
     },
     "LHLL": {
-      "title": { "ja": "単独型テクニカルスペシャリスト", "en": "Isolated Technical Specialist" },
-      "profile": { "ja": "組織への帰属意識や経営理念への共感は低く、自身の高度なテクニカルスキルのみを信頼してタスクに臨む一匹狼型のプロフェッショナルです。チームビルディングや会議を極端に嫌いますが、誰も解決できない難解な技術的障害を単独で解決する卓越したアビリティを持っています。", "en": "Cynical of corporate culture, tracking value purely via your skill vector. Solves complex engineering blockers solo." },
-      "action_plan": { "ja": "組織に無理に同化しようとストレスを溜めるのは悪手です。自身の技術的強みを『機能単位で切り売り・提供』できる特務ポジションや独立性の高いアーキテクトとしての地位を早期に確立してください。", "en": "Do not exhaust yourself on consensus-building. Establish a discrete technical domain where you operate autonomously." },
+      "title": { "ja": "単独集中型スペシャリスト", "en": "Solo-Focused Specialist" },
+      "profile": { "ja": "グループワークや集団でのコミュニケーションは極端に苦手ですが、自身の得意な作業領域（PC入力や特定の軽作業など）においては、誰にも負けない集中力とクオリティを発揮します。一人で没頭できる環境下で真価を発揮する一匹狼タイプです。", "en": "Solves complex specific tasks solo. Not fond of group communication but highly focused on personal strengths." },
+      "action_plan": { "ja": "無理にみんなと仲良くしたり、コミュニケーション能力を上げようとして過度なストレスを溜めるのは逆効果です。まずは「自分の得意な作業スキル」を磨き、そのスキルで事業所に貢献する道を探しましょう。", "en": "Do not exhaust yourself forcing group communication. Focus on polishing your specific skills to contribute." },
       "affinity": {
         "best_partner": "HLHH",
-        "partner_title": { "ja": "不屈のフォロワーシップリーダー", "en": "Resilient Followership Leader" },
-        "reason": { "ja": "あなたが技術開発に100%集中できるよう、彼らが泥臭く社内政治や他部署との折衝、ヘイト管理をすべて引き受けて守る強固な盾（防波堤）として機能してくれます。", "en": "They absorb administrative friction and team politics, providing an insulated sandbox for you to code." }
+        "partner_title": { "ja": "不屈のムードメーカー", "en": "Resilient Mood Maker" },
+        "reason": { "ja": "あなたが作業に100%集中できるよう、彼らが周囲とのコミュニケーションや雰囲気作りを代わりに引き受けてくれます。", "en": "They handle the social atmosphere, allowing you to focus 100% on your specialized tasks." }
       }
     },
     "LLHH": {
       "title": { "ja": "現場適応型サバイバー", "en": "Field Adaptation Survivor" },
-      "profile": { "ja": "突出した自己肯定感や崇高なキャリアビジョンは持ち合わせていませんが、理不尽な環境変化や崩壊した現場を耐え抜き、状況を能動的に好転させる圧倒的な耐久力（Resilience）と楽観性を備えたサバイバーです。どんな過酷な案件でも絶対に破綻しない強みがあります。", "en": "Low baseline ego but immune to burnout. You stabilize toxic project environments through organic flexibility." },
-      "action_plan": { "ja": "根拠のない大言壮語や無謀な自信は不要です。目の前の課題を泥臭く一つずつクリアし、過酷な現場をまた一つ『生存・完遂させた』という定量的なファクトのみを自身の誇りとして積み上げてください。", "en": "Ego is non-essential. Validate your self-worth through the sequential checklist of survived projects." },
+      "profile": { "ja": "高い目標や自信を持っているわけではありませんが、思い通りにいかない状況やストレスに対して非常に打たれ強く、「まあなんとかなるだろう」と受け流すしなやかさを持っています。どんな環境に置かれても、マイペースに生き残る力があるサバイバーです。", "en": "Low baseline confidence but immune to burnout. You adapt to stressful environments with organic flexibility." },
+      "action_plan": { "ja": "無理に立派な目標を立てる必要はありません。日々のちょっとしたトラブルを笑い飛ばし、「今日も無事に通所できた」という事実だけを積み重ねていくことが、最終的な就労への一番の近道です。", "en": "Don't force grand goals. Laughing off daily troubles and showing up steadily is your shortest path to employment." },
       "affinity": {
         "best_partner": "HHLL",
-        "partner_title": { "ja": "論理構築型システムアーキテクト", "en": "Logical System Architect" },
-        "reason": { "ja": "彼らが設計した精緻な机上の理論やビジョンが現場の不条理で瓦解した瞬間、あなたの異常な現場復帰力と柔軟性が機能し、瓦礫の中からプロジェクトを強引に蘇生・再駆動させます。", "en": "When their pure architecture fragments in production, your survival reflex breathes immediate lifecycle back into it." }
+        "partner_title": { "ja": "理論構築型プランナー", "en": "Logical Planner" },
+        "reason": { "ja": "真面目すぎてパニックになりがちな彼らに対して、あなたの「大丈夫だよ」というリラックスした態度が最高の救いになります。", "en": "Your relaxed 'it's okay' attitude is the best salvation for those who panic from being too serious." }
       }
     },
     "LLHL": {
-      "title": { "ja": "高耐久型バックオフィサー", "en": "Highly Durable Controller" },
-      "profile": { "ja": "目立つ成果アピールや楽観的な予測は行わず、組織のセーフティネットとして機能する精神的サンドバッグ兼最強の防護盾です。負荷の高いルーティンワークや泥臭いガバナンス維持、インフラ保守などを黙々とノーミスで支え続けることができる、組織に不可欠な守護神です。", "en": "Low visibility, high asset. The structural anchor who quietly stabilizes governance and infrastructure under load." },
-      "action_plan": { "ja": "防御コンピテンシーは組織内最高峰ですが、自ら攻撃を仕掛けるエネルギーを欠いています。あなたを都合のいい駒として使い潰すだけの過酷な環境（ブラックプロジェクト）からは、冷徹に、しかし確実にエスケープする防衛権を行使してください。", "en": "Your defense is maxed; your leverage is zero. Exercise calculated boundary controls against abusive workflows." },
+      "title": { "ja": "高耐久型バックアップ", "en": "Highly Durable Backup" },
+      "profile": { "ja": "目立ったアピールや楽観的な態度はとりませんが、単調で誰かがやらなければならない裏方の作業を、文句も言わずに黙々とこなし続けることができる事業所の守護神です。感情の波が少なく、非常に安定した通所・作業ペースを保ちます。", "en": "Low visibility, high asset. The structural anchor who quietly stabilizes daily background tasks." },
+      "action_plan": { "ja": "自己主張が苦手なため、気づかないうちに自分ばかりがしんどい作業を押し付けられていることがあります。疲労を感じる前に、「今日はここまでで休みたいです」と支援員に伝える練習をしてください。", "en": "Because you rarely complain, practice explicitly telling staff when you need to rest to avoid taking on too much." },
       "affinity": {
         "best_partner": "HHLH",
-        "partner_title": { "ja": "先行突破型エースプレイヤー", "en": "Front-Line Ace Player" },
-        "reason": { "ja": "あなたがバックエンドで地密にリスクを吸収し戦線を死守している絶妙なタイミングで、彼らが華麗な一撃（新規受注やブレイクスルー）を放ち、一撃で全体の戦況・業績をひっくり返してくれます。", "en": "While you ground the system under high load, they score the strategic growth goals to pivot the division." }
+        "partner_title": { "ja": "積極型フロントランナー", "en": "Active Front-Runner" },
+        "reason": { "ja": "あなたが裏方で安定して作業を支えているおかげで、彼らが安心して新しいことに挑戦し、事業所全体に活気をもたらすことができます。", "en": "Your stable background support allows them to safely challenge new things and energize the facility." }
       }
     },
     "LLLH": {
-      "title": { "ja": "組織心理安全性ビルダー", "en": "Psychological Safety Builder" },
-      "profile": { "ja": "過度な出世競争や厳しい目標設定からは距離を置いていますが、なぜか常にポジティブで、その場にいるだけで職場の殺伐とした空気を融解させる天然のオアシス型人材です。チーム全体の心理的安全性を根底から支える、隠れた重要バッファとなります。", "en": "Maintains low profile, high empathy. You act as an emotional shock absorber, reducing organizational friction." },
-      "action_plan": { "ja": "無理にガツガツしたビジネスパーソンを演じる必要はありません。あなたの『そこにいるだけでチームの警戒心が緩み、本音の対話が始まる』という資質は、高度な組織潤滑油（チームビルディング資質）として誇るべきコンピテンシーです。", "en": "Do not fake aggressive ambition. Your structural value lies in de-escalating interpersonal stress matrix." },
+      "title": { "ja": "チームの心理的安全基地", "en": "Team's Psychological Safety Base" },
+      "profile": { "ja": "自分から率先して目標に向かって走るタイプではありませんが、なぜか常に穏やかで、その場にいるだけで周りの利用者の緊張やイライラを和ませる、オアシスのような存在です。チームのトラブルを未然に防ぐ、見えない潤滑油として機能します。", "en": "Maintains a low profile but acts as an emotional shock absorber, easing tension for everyone around." },
+      "action_plan": { "ja": "「自分は作業が遅い」「スキルがない」と落ち込む必要はありません。あなたの「そこにいるだけで場が和らぐ」という資質は、就労先においても職場の雰囲気を良くする立派な能力（長所）です。", "en": "Do not worry about lack of speed. Your natural ability to ease the atmosphere is a highly valued strength in any workplace." },
       "affinity": {
         "best_partner": "HHHL",
-        "partner_title": { "ja": "リスク管理型ストラテジスト", "en": "Risk-Management Strategist" },
-        "reason": { "ja": "常に冷徹な論理思考で四方を警戒し、神経を極限まで擦り減らしているマネジメント層やリーダーにとって、あなたの作為のない自然体な存在そのものが、唯一のメンタル回復のセーフハウスとなります。", "en": "To hyper-vigilant executives draining their cognitive reserves, your sanctuary acts as their core recovery node." }
+        "partner_title": { "ja": "慎重型ステップアッパー", "en": "Cautious Step-Upper" },
+        "reason": { "ja": "常に気を張って神経をすり減らしている真面目な彼らにとって、あなたの作為のない自然体な存在が一番の癒やしとなります。", "en": "To hyper-vigilant individuals, your natural, relaxed presence serves as their greatest comfort." }
       }
     },
     "LLLL": {
-      "title": { "ja": "危機察知型リスクアナリスト", "en": "Risk-Detecting Analyst" },
-      "profile": { "ja": "エゴ、楽観性、エネルギー、目先の実行力などの全ステータスが平準化、または低位にあります。しかし、それは『あらゆる物事のネガティブな側面や脆弱性』を誰よりも敏感にキャッチできる、極めて高度なリスクセンサーとしてのトレードオフです。デバッグや内部統制で真価を発揮します。", "en": "All core metrics minimum. An optimized risk diagnostic array that visualizes systems failures before execution." },
-      "action_plan": { "ja": "無理にポジティブシンキングを導入しようとしないでください。あなたの持つ『不安や警戒感』は、高度なリスクマネジメント能力の裏返しです。プロダクトのバグ出し、監査、脆弱性診断（デバッグ）にリソースを特化させましょう。", "en": "Suppress forced optimism. Your predictive anxiety is premium quality risk assurance; deploy to deep QA and auditing." },
+      "title": { "ja": "危機察知型アナリスト", "en": "Risk-Detecting Analyst" },
+      "profile": { "ja": "目標への意欲や自己肯定感は現在お休み中ですが、それは「あらゆる物事のネガティブな側面やリスク」を誰よりも敏感にキャッチし、自分を守ろうとしている証拠です。無理をしていないため、大きな失敗を未然に防ぐセンサーを持っています。", "en": "All core metrics minimum. This reflects a highly sensitive defense mechanism that prioritizes avoiding risks." },
+      "action_plan": { "ja": "今は無理にポジティブになろうとしたり、目標を立てようとしたりする必要はありません。まずは「安心できる環境（事業所）で、決められた時間を穏やかに過ごすこと」だけを唯一の目標にしてください。", "en": "Do not force positivity. Make your sole goal simply spending time peacefully in a safe environment for now." },
       "affinity": {
         "best_partner": "HHHH",
-        "partner_title": { "ja": "自律型ハイパフォーマー", "en": "Autonomous High-Performer" },
-        "reason": { "ja": "あなたが日々怯え、アラートを発している『最悪のシナリオや想定バグ』を、彼らが一切の感情の動揺なく、圧倒的なパワーとセルフマネジメント力でねじ伏せ、物理的に解決・駆逐してくれます。", "en": "The systemic bugs you uncover, they eliminate with continuous execution capacity, neutralizing errors." }
+        "partner_title": { "ja": "自律型セルフマネジメント", "en": "Autonomous Self-Manager" },
+        "reason": { "ja": "あなたが抱く不安やリスクを言葉にして伝えることで、実行力のある彼らがそれを代わりに解決し、道を切り拓いてくれます。", "en": "By expressing your anxieties, those with high execution capacity can solve them and clear the path for you." }
       }
     }
   }

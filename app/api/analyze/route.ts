@@ -7,11 +7,24 @@ export async function POST(req: Request) {
     const body = await req.json();
     const { chartData } = body;
 
-    const prompt = `あなたはプロの組織開発コンサルタントです。
-以下の「HERO（心理的資本）」のアセスメント結果データを分析し、経営陣に向けて「組織の現状の強み・弱み」と「具体的な改善アクション」を提示してください。
+    // 💡【修正箇所】福祉・就労支援に特化したプロンプトへ完全置換
+    const prompt = `あなたは、障害福祉サービス（就労移行支援・継続支援など）に精通した「プロの就労支援アドバイザー兼、公認心理師」です。
+以下の「就労を目指す利用者たちのHERO（心理的資本）」のアセスメント結果データを分析し、施設長および支援員に向けて、日々の支援の質を向上させるためのレポートを作成してください。
+
+特に、利用者の「安定した利用継続（通所）」と「将来的な就労定着」に直接結びつくような、現場で明日から使える具体的なアドバイスを重視してください。
 回答は読みやすいMarkdown形式（見出しや箇条書きを使用）で出力してください。
 
-【社員のアセスメントデータ】
+【出力の構成案】
+## 1. 利用者全体の心理状態の傾向
+（データから読み取れる、現在の利用者全体の強みと、配慮が必要な課題）
+
+## 2. 安定した利用継続のためのアプローチ
+（HEROの数値が低い項目に対して、支援員は具体的にどのような「声かけ」や「環境調整」を行えば、通所の安定に繋がるか）
+
+## 3. 個別支援計画と就労に向けたアクション
+（このデータを、今後の利用者の「個別支援計画」の目標設定や、就労に向けたステップアップにどう活かすべきか）
+
+【利用者のアセスメントデータ】
 ${JSON.stringify(chartData, null, 2)}`;
 
     const apiKey = process.env.GEMINI_API_KEY;
@@ -21,7 +34,7 @@ ${JSON.stringify(chartData, null, 2)}`;
       throw new Error("APIキーがシステムに設定されていません。VercelのEnvironment Variablesをご確認ください。");
     }
 
-    // 💡 修正：あなたの最初の大正解「gemini-2.5-flash」に戻します！！
+    // Gemini 2.5 Flashモデルでの生成
     const response = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
       {
@@ -30,7 +43,7 @@ ${JSON.stringify(chartData, null, 2)}`;
         body: JSON.stringify({
           contents: [{ parts: [{ text: prompt }] }]
         }),
-        cache: 'no-store' // 💡 Vercel対策のキャッシュ無効化は残しておきます
+        cache: 'no-store' // Vercel対策のキャッシュ無効化
       }
     );
 
