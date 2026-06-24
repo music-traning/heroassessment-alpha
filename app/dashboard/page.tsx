@@ -612,7 +612,7 @@ const handleOpenIndividualModal = async (emp: EmployeeData) => {
         )}
 
         {showPaywall && (
-          <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 backdrop-blur-sm transition-opacity">
+          <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-[60] backdrop-blur-sm transition-opacity">
             <Card className="max-w-lg w-full mx-4 bg-white shadow-2xl border-t-4 border-fuchsia-500">
               <Title className="text-2xl font-bold mb-4 text-slate-800">法人向けプレミアム機能</Title>
               <p className="text-slate-600 mb-6 leading-relaxed">
